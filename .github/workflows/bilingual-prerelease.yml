@@ -3,17 +3,23 @@ name: bilingual-prerelease
 on:
   push:
     tags: ['bilingual-v*-preview.*']
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'New immutable bilingual-vYYYY.MM.DD-preview.N tag'
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: bilingual-prerelease-${{ github.ref }}
+  group: bilingual-prerelease-${{ inputs.release_tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   publish:
-    if: github.repository == 'JWhiteCat/systeminformer'
+    if: github.repository == 'JWhiteCat/systeminformer' && (github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -22,7 +28,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
       EXPECTED_SHA: ${{ github.sha }}
-      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+      RELEASE_EVENT: ${{ github.event_name }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -35,6 +42,10 @@ jobs:
           [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           git merge-base --is-ancestor "$EXPECTED_SHA" origin/master
+          if [ "$RELEASE_EVENT" = workflow_dispatch ]; then
+            test "$(git rev-parse origin/master)" = "$EXPECTED_SHA"
+            test "$(gh api "repos/$GH_REPO/git/matching-refs/tags/$RELEASE_TAG" --jq 'length')" = 0
+          fi
           python3 tools/release/verify_ci.py --commit "$EXPECTED_SHA" >> "$GITHUB_ENV"
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             echo 'A release already exists. Inspect it before any manual retry.' >&2
@@ -46,6 +57,15 @@ jobs:
           set -euo pipefail
           gh run download "$BUILD_RUN_ID" --name "systeminformer-prerelease-$EXPECTED_SHA" --dir release-assets
           python3 tools/release/prepare_release.py --verify --destination release-assets --commit "$EXPECTED_SHA"
+      - name: Create new exact tag for manual publication
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GH_REPO/commits/master" --jq '.sha')" = "$EXPECTED_SHA"
+          test "$(gh api "repos/$GH_REPO/git/matching-refs/tags/$RELEASE_TAG" --jq 'length')" = 0
+          gh api --method POST "repos/$GH_REPO/git/refs" \
+            -f "ref=refs/tags/$RELEASE_TAG" -f "sha=$EXPECTED_SHA"
       - name: Create complete draft prerelease and verify uploaded bytes
         shell: bash
         run: |

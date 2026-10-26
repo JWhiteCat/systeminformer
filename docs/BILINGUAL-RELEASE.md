@@ -37,7 +37,13 @@ No fork update server, credentials or signing keys are configured.
    output. It uploads a commit-named `systeminformer-prerelease-<SHA>` artifact.
 3. After reviewing the exact commit and its test results, push a new immutable
    `bilingual-vYYYY.MM.DD-preview.N` tag pointing to that commit. Do not move an
-   existing release tag. Tag publication is a separate explicit action.
+   existing release tag. Alternatively, use **Actions → bilingual-prerelease →
+   Run workflow**, select **master**, and supply a new tag of the same format.
+   Manual publication fixes the target to that run's master SHA, rejects an
+   existing tag or a changed master, verifies CI and packages, then creates the
+   tag using the existing ephemeral Actions token. That same run continues to
+   publish; it does not depend on a token-created tag triggering another run.
+   Tag/publication initiation is a separate explicit action.
 4. The bilingual-prerelease workflow verifies all three successful push workflows
    for that SHA, downloads only its package artifact, rechecks hashes, creates a
    **draft prerelease**, uploads the assets and publishes only the complete draft.

@@ -34,4 +34,16 @@ class ReleaseCiTests(unittest.TestCase):
         self.assertLess(source.index('--destination remote-verification'), source.index('--draft=false'))
         self.assertNotIn('--clobber', source)
 
+    def test_manual_publication_is_pinned_and_non_overwriting(self):
+        source=(path.parents[2]/'.github/workflows/bilingual-prerelease.yml').read_text()
+        self.assertIn('workflow_dispatch:', source)
+        self.assertIn("github.ref == 'refs/heads/master'", source)
+        self.assertIn('EXPECTED_SHA: ${{ github.sha }}', source)
+        self.assertIn('git/matching-refs/tags/$RELEASE_TAG', source)
+        self.assertIn('repos/$GH_REPO/commits/master', source)
+        self.assertIn('-f "ref=refs/tags/$RELEASE_TAG" -f "sha=$EXPECTED_SHA"', source)
+        self.assertLess(source.index('--destination release-assets --commit'), source.index('gh api --method POST'))
+        self.assertLess(source.index('gh api --method POST'), source.index('gh release create'))
+        self.assertNotIn('--method PATCH', source)
+
 if __name__ == '__main__': unittest.main()
