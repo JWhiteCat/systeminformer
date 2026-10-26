@@ -39,6 +39,10 @@ function(_si_set_target_defaults target)
     set(multiValueArgs)
     cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}" "${multiValueArgs}")
 
+    # Included bilingual resources are UTF-8. Match Common.User.props (/8)
+    # without code_page pragmas, which UTF-8-only resource compilation rejects.
+    target_compile_options(${target} PRIVATE $<$<COMPILE_LANGUAGE:RC>:/c65001>)
+
     if(NOT arg_TYPE MATCHES "^(UM|KM)(_LIB|_BIN)$")
         message(FATAL_ERROR "Invalid target type: ${arg_TYPE}")
     endif()

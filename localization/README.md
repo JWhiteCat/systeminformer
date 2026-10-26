@@ -44,7 +44,9 @@ This avoids changing the thread locale or translating arbitrary window content.
 English `.rc` files are the source of truth. Their checked-in `.zh-CN.rc` siblings
 are generated caption-only copies included by the English resource scripts; IDs,
 styles, font declarations, layout coordinates and accelerator resources are
-preserved. Generated RC files use explicit UTF-8 code pages. C catalog strings use
+preserved. Generated RC files use UTF-8; MSBuild selects `/8` and CMake selects
+`/c65001`. Included files do not use code-page pragmas, which MSBuild's UTF-8-only
+mode rejects. C catalog strings use
 ASCII Unicode escapes so compiler source encodings do not affect Chinese text.
 
 ## Maintaining translations

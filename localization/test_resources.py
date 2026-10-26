@@ -54,6 +54,14 @@ class ResourceTests(unittest.TestCase):
         self.assertIn('CAPTION "Not translated"', output)
         self.assertIn('LTEXT "Other text",IDC_STATIC,0,0,10,10', output)
 
+    def test_resource_encoding_is_selected_by_both_build_systems(self):
+        # RC4215: /8 (UTF-8-only mode) rejects any code_page pragma, even 65001.
+        for path in SOURCES:
+            generated = path.with_name(path.stem + '.zh-CN.rc').read_text(encoding='utf-8')
+            self.assertNotIn('#pragma code_page', generated)
+        self.assertIn('/8 %(AdditionalOptions)', (ROOT / 'Common.User.props').read_text())
+        self.assertIn('$<$<COMPILE_LANGUAGE:RC>:/c65001>', (ROOT / 'cmake/commands.cmake').read_text())
+
 
 if __name__ == '__main__':
     unittest.main()
