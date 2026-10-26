@@ -47,6 +47,7 @@ set(HEADERS
     "include/procprp.h"
     "include/procprpp.h"
     "include/procprv.h"
+    "include/proccolmeta.h"
     "include/proctree.h"
     "include/srvlist.h"
     "include/srvprv.h"

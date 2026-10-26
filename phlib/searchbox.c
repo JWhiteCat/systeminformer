@@ -104,6 +104,7 @@ typedef struct _PH_SEARCHCONTROL_CONTEXT
     COLORREF CueBannerBackgroundColor;
 
     ULONG SearchDelayMs;
+    BOOLEAN ImeComposing;
 
     PPH_SEARCHCONTROL_CALLBACK Callback;
     PVOID CallbackContext;
@@ -767,6 +768,10 @@ BOOLEAN PhSearchUpdateText(
     //    return FALSE;
     //}
 
+    // Do not filter against an unfinished IME composition string.
+    if (Context->ImeComposing)
+        return FALSE;
+
     searchboxTextString = PhGetWindowText(WindowHandle);
     if (!searchboxTextString)
         return FALSE;
@@ -1375,6 +1380,29 @@ LRESULT CALLBACK PhSearchWndSubclassProc(
             PhDestroyEMenu(menu);
         }
         return FALSE;
+    case WM_IME_STARTCOMPOSITION:
+        context->ImeComposing = TRUE;
+        break;
+    case WM_IME_ENDCOMPOSITION:
+        {
+            LRESULT result;
+
+            // Let EDIT finish committing/cancelling its composition first.
+            result = CallWindowProc(oldWndProc, WindowHandle, WindowMessage, wParam, lParam);
+            context->ImeComposing = FALSE;
+            PhSearchUpdateText(WindowHandle, context, FALSE);
+            RedrawWindow(WindowHandle, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+            return result;
+        }
+    case WM_IME_COMPOSITION:
+        {
+            LRESULT result = CallWindowProc(oldWndProc, WindowHandle, WindowMessage, wParam, lParam);
+
+            // Some IMEs deliver a committed result without a composition session.
+            PhSearchUpdateText(WindowHandle, context, FALSE);
+            RedrawWindow(WindowHandle, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+            return result;
+        }
     case WM_CUT:
     case WM_CLEAR:
     case WM_PASTE:
@@ -1554,6 +1582,10 @@ LRESULT CALLBACK PhSearchWndSubclassProc(
         break;
     case WM_KEYDOWN:
         {
+            // Candidate navigation/cancellation belongs to the input method.
+            if (context->ImeComposing)
+                break;
+
             // Delete previous word for ctrl+backspace (thanks to Katayama Hirofumi MZ) (modified) (dmex)
             if (wParam == VK_BACK && GetAsyncKeyState(VK_CONTROL) < 0)
             {
@@ -1620,13 +1652,27 @@ LRESULT CALLBACK PhSearchWndSubclassProc(
         break;
     case WM_CHAR:
         {
+            if (context->ImeComposing)
+                break;
+
             // Delete previous word for ctrl+backspace (dmex)
             if (wParam == VK_F16 && GetAsyncKeyState(VK_CONTROL) < 0)
                 return 1;
+
+            // IME/Unicode input need not be followed by a physical key-up.
+            {
+                LRESULT result = CallWindowProc(oldWndProc, WindowHandle, WindowMessage, wParam, lParam);
+                PhSearchUpdateText(WindowHandle, context, FALSE);
+                RedrawWindow(WindowHandle, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
+                return result;
+            }
         }
         break;
     case WM_GETDLGCODE:
         {
+            if (context->ImeComposing)
+                return CallWindowProc(oldWndProc, WindowHandle, WindowMessage, wParam, lParam) | DLGC_WANTALLKEYS;
+
             // Intercept esc key only when there is text to clear or focus to restore,
             // otherwise let the dialog manager translate it to IDCANCEL. (dmex)
             if (wParam == VK_ESCAPE && lParam && ((MSG*)lParam)->message == WM_KEYDOWN)

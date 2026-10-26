@@ -525,4 +525,7 @@ PhAggregateProcessFieldIfNeeded(
     );
 // end_phapppub
 
+// Internal UI identity check: IDs from other trees must not use process metadata.
+BOOLEAN PhIsProcessTreeList(_In_ HWND WindowHandle);
+
 #endif

@@ -286,6 +286,8 @@ typedef enum _PH_TREENEW_MESSAGE
     TreeNewReorderCommit,  // PH_TREENEW_REORDER_EVENT (in) Parameter1
     TreeNewReorderCancel,  // PH_TREENEW_REORDER_EVENT (best-effort notify) Parameter1
 
+    TreeNewGetHeaderTooltip, // PPH_TREENEW_GET_HEADER_TOOLTIP Parameter1
+
     MaxTreeNewMessage
 } PH_TREENEW_MESSAGE;
 
@@ -440,6 +442,14 @@ typedef struct _PH_TREENEW_GET_HEADER_TEXT
     ULONG TextCacheSize;
     ULONG Flags; // TN_CACHE to cache the text until the control-level cache is cleared
 } PH_TREENEW_GET_HEADER_TEXT, *PPH_TREENEW_GET_HEADER_TEXT;
+
+// The callback supplies borrowed immutable text; the control copies it immediately.
+// Leave Text NULL (or return FALSE) to retain the clipped-header fallback.
+typedef struct _PH_TREENEW_GET_HEADER_TOOLTIP
+{
+    PPH_TREENEW_COLUMN Column;
+    PCWSTR Text;
+} PH_TREENEW_GET_HEADER_TOOLTIP, *PPH_TREENEW_GET_HEADER_TOOLTIP;
 
 typedef struct _PH_TREENEW_SET_HEADER_CACHE
 {

@@ -12,10 +12,16 @@
 
 #include <phapp.h>
 #include <settings.h>
+#include <proctree.h>
+#include <proccolmeta.h>
 
 typedef struct _COLUMNS_DIALOG_CONTEXT
 {
     HWND ControlHandle;
+    BOOLEAN ProcessColumns;
+    HWND TooltipHandle;
+    ULONG_PTR InactiveMatchHandle;
+    ULONG_PTR ActiveMatchHandle;
     HFONT ControlFont;
     ULONG Type;
     PPH_LIST Columns;
@@ -78,6 +84,7 @@ VOID PhShowChooseColumnsDialog(
 
     memset(&context, 0, sizeof(COLUMNS_DIALOG_CONTEXT));
     context.ControlHandle = ControlHandle;
+    context.ProcessColumns = PhIsProcessTreeList(ControlHandle);
     context.Type = Type;
 
     if (Type == PH_CONTROL_TYPE_TREE_NEW)
@@ -130,32 +137,59 @@ static int __cdecl PhpInactiveColumnsCompareNameTn(
     _In_ const void *elem2
     )
 {
-    PCWSTR column1 = *(PCWSTR *)elem1;
-    PCWSTR column2 = *(PCWSTR *)elem2;
+    PPH_TREENEW_COLUMN column1 = *(PPH_TREENEW_COLUMN *)elem1;
+    PPH_TREENEW_COLUMN column2 = *(PPH_TREENEW_COLUMN *)elem2;
 
-    return PhCompareStringZ(column1, column2, FALSE);
+    return PhCompareStringZ(column1->Text, column2->Text, FALSE);
 }
 
-/**
- * Finds the index of a string in a list.
- *
- * \param List The list to search.
- * \param String The string to find.
- * \return The index of the string, or ULONG_MAX if not found.
- */
-_Success_(return != ULONG_MAX)
-static ULONG IndexOfStringInList(
-    _In_ PPH_LIST List,
-    _In_ PCWSTR String
-    )
+// List-box item data carries identity; captions are not unique (especially after translation).
+static PPH_TREENEW_COLUMN PhpColumnsGetItem(HWND ListBoxHandle, LONG Index)
+{
+    LRESULT item = ListBox_GetItemData(ListBoxHandle, Index);
+    return item == LB_ERR ? NULL : (PPH_TREENEW_COLUMN)item;
+}
+
+static ULONG PhpColumnsIndexOf(PPH_LIST List, PPH_TREENEW_COLUMN Column)
 {
     for (ULONG i = 0; i < List->Count; i++)
-    {
-        if (PhEqualStringZ(List->Items[i], String, FALSE))
+        if (List->Items[i] == Column)
             return i;
-    }
-
     return ULONG_MAX;
+}
+
+static LONG PhpColumnsInsertItem(HWND ListBoxHandle, LONG Index, PPH_TREENEW_COLUMN Column)
+{
+    LONG index = ListBox_InsertString(ListBoxHandle, Index, Column->Text);
+    if (index != LB_ERR && index != LB_ERRSPACE)
+        ListBox_SetItemData(ListBoxHandle, index, (LPARAM)Column);
+    return index;
+}
+
+static BOOLEAN PhpColumnsMatch(PCOLUMNS_DIALOG_CONTEXT Context, ULONG_PTR MatchHandle, PPH_TREENEW_COLUMN Column)
+{
+    PH_STRINGREF text;
+    const PH_PROCESS_COLUMN_METADATA *metadata;
+    PCWSTR names[4];
+
+    if (!MatchHandle)
+        return TRUE;
+
+    names[0] = Column->Text;
+    metadata = Context->ProcessColumns ? PhpGetProcessColumnMetadata(Column->Id) : NULL;
+    names[1] = metadata ? metadata->EnglishName : NULL;
+    names[2] = metadata ? metadata->ChineseName : NULL;
+    names[3] = metadata ? metadata->Aliases : NULL;
+
+    for (ULONG i = 0; i < RTL_NUMBER_OF(names); i++)
+    {
+        if (!names[i] || !names[i][0])
+            continue;
+        PhInitializeStringRef(&text, names[i]);
+        if (PhSearchControlMatch(MatchHandle, &text))
+            return TRUE;
+    }
+    return FALSE;
 }
 
 /**
@@ -184,6 +218,8 @@ static VOID PhpColumnsSetHotItem(
 
     Context->HotListHandle = ListBoxHandle;
     Context->HotListIndex = ItemIndex;
+    if (Context->TooltipHandle)
+        SendMessage(Context->TooltipHandle, TTM_UPDATE, 0, 0);
 
     if (ListBoxHandle && ItemIndex != LB_ERR)
     {
@@ -558,41 +594,40 @@ VOID PhpColumnsResetListBox(
     _In_opt_ _CoreCrtSecureSearchSortCompareFunction CompareFunction
     )
 {
+    PCOLUMNS_DIALOG_CONTEXT context = PhGetWindowContext(ListBoxHandle, PH_WINDOW_CONTEXT_DEFAULT);
+    LONG oldSelection = ListBox_GetCurSel(ListBoxHandle);
+    PPH_TREENEW_COLUMN selectedColumn = PhpColumnsGetItem(ListBoxHandle, oldSelection);
+    LONG newSelection = LB_ERR;
     SendMessage(ListBoxHandle, WM_SETREDRAW, FALSE, 0);
-
     ListBox_ResetContent(ListBoxHandle);
-
     if (CompareFunction)
-    {
         qsort_s(Array->Items, Array->Count, sizeof(ULONG_PTR), CompareFunction, NULL);
-    }
-
-    if (!MatchHandle)
+    for (ULONG i = 0; i < Array->Count; i++)
     {
-        for (ULONG i = 0; i < Array->Count; i++)
+        PPH_TREENEW_COLUMN column = Array->Items[i];
+        if (PhpColumnsMatch(context, MatchHandle, column))
         {
-            ListBox_InsertString(ListBoxHandle, i, Array->Items[i]);
+            LONG index = PhpColumnsInsertItem(ListBoxHandle, -1, column);
+            if (column == selectedColumn)
+                newSelection = index;
         }
     }
-    else
-    {
-        ULONG index = 0;
-
-        for (ULONG i = 0; i < Array->Count; i++)
-        {
-            PH_STRINGREF text;
-
-            PhInitializeStringRefLongHint(&text, Array->Items[i]);
-
-            if (PhSearchControlMatch(MatchHandle, &text))
-            {
-                ListBox_InsertString(ListBoxHandle, index, Array->Items[i]);
-                index++;
-            }
-        }
-    }
-
+    if (newSelection == LB_ERR && oldSelection != LB_ERR && ListBox_GetCount(ListBoxHandle) > 0)
+        newSelection = min(oldSelection, ListBox_GetCount(ListBoxHandle) - 1);
+    ListBox_SetCurSel(ListBoxHandle, newSelection);
     SendMessage(ListBoxHandle, WM_SETREDRAW, TRUE, 0);
+    InvalidateRect(ListBoxHandle, NULL, TRUE);
+    SendMessage(GetParent(ListBoxHandle), WM_COMMAND,
+        MAKEWPARAM(GetDlgCtrlID(ListBoxHandle), LBN_SELCHANGE), (LPARAM)ListBoxHandle);
+}
+
+static VOID PhpColumnsRefreshLists(PCOLUMNS_DIALOG_CONTEXT Context)
+{
+    PhpColumnsSetHotItem(Context, NULL, LB_ERR);
+    PhpColumnsResetListBox(Context->InactiveWindowHandle, Context->InactiveMatchHandle,
+        Context->InactiveListArray, PhpInactiveColumnsCompareNameTn);
+    PhpColumnsResetListBox(Context->ActiveWindowHandle, Context->ActiveMatchHandle,
+        Context->ActiveListArray, NULL);
 }
 
 // Moves the item at listbox row FromIndex to insert position ToIndex (the item is
@@ -610,204 +645,62 @@ static VOID PhpColumnsMoveActiveItem(
     _In_ LONG ToIndex
     )
 {
-    LONG count;
-    LONG target;
-    PPH_STRING string;
-    ULONG arrayFrom;
-    ULONG arrayTo;
-    PVOID item;
+    PPH_TREENEW_COLUMN item = PhpColumnsGetItem(Context->ActiveWindowHandle, FromIndex);
+    PPH_TREENEW_COLUMN target = PhpColumnsGetItem(Context->ActiveWindowHandle, ToIndex);
+    ULONG from = PhpColumnsIndexOf(Context->ActiveListArray, item);
+    ULONG to = target ? PhpColumnsIndexOf(Context->ActiveListArray, target) : Context->ActiveListArray->Count;
 
-    count = ListBox_GetCount(Context->ActiveWindowHandle);
-
-    if (FromIndex == LB_ERR || FromIndex >= count || ToIndex < 0 || ToIndex > count)
+    if (!item || from == ULONG_MAX || ToIndex < 0 || to == ULONG_MAX)
         return;
-
-    PhpColumnsSetHotItem(Context, NULL, LB_ERR);
-    if (ToIndex == FromIndex || ToIndex == FromIndex + 1) // no-op move
+    if (from == to || from + 1 == to)
         return;
-
-    string = PhGetListBoxString(Context->ActiveWindowHandle, FromIndex);
-
-    if (PhIsNullOrEmptyString(string))
-    {
-        PhClearReference(&string);
-        return;
-    }
-
-    arrayFrom = IndexOfStringInList(Context->ActiveListArray, string->Buffer);
-
-    if (arrayFrom != ULONG_MAX)
-    {
-        // The listbox may be filtered, so translate the insert row to an array
-        // position through the string of the item currently at that row.
-        if (ToIndex >= count)
+    PhRemoveItemsList(Context->ActiveListArray, from, 1);
+    if (to > from)
+        to--;
+    PhInsertItemList(Context->ActiveListArray, to, item);
+    PhpColumnsRefreshLists(Context);
+    // Restore selection by identity after filtering (not by translated text).
+    for (LONG i = 0; i < ListBox_GetCount(Context->ActiveWindowHandle); i++)
+        if (PhpColumnsGetItem(Context->ActiveWindowHandle, i) == item)
         {
-            arrayTo = Context->ActiveListArray->Count;
+            ListBox_SetCurSel(Context->ActiveWindowHandle, i);
+            SendMessage(GetParent(Context->ActiveWindowHandle), WM_COMMAND,
+                MAKEWPARAM(IDC_ACTIVE, LBN_SELCHANGE), (LPARAM)Context->ActiveWindowHandle);
+            break;
         }
-        else
-        {
-            PPH_STRING targetString = PhGetListBoxString(Context->ActiveWindowHandle, ToIndex);
-
-            arrayTo = targetString ? IndexOfStringInList(Context->ActiveListArray, targetString->Buffer) : ULONG_MAX;
-            PhClearReference(&targetString);
-
-            if (arrayTo == ULONG_MAX)
-                arrayTo = Context->ActiveListArray->Count;
-        }
-
-        item = Context->ActiveListArray->Items[arrayFrom];
-        PhRemoveItemsList(Context->ActiveListArray, arrayFrom, 1);
-
-        if (arrayTo > arrayFrom)
-            arrayTo--;
-
-        PhInsertItemList(Context->ActiveListArray, arrayTo, item);
-
-        target = ToIndex;
-
-        if (target > FromIndex)
-            target--;
-
-        ListBox_DeleteString(Context->ActiveWindowHandle, FromIndex);
-        ListBox_InsertString(Context->ActiveWindowHandle, target, item);
-        ListBox_SetCurSel(Context->ActiveWindowHandle, target);
-
-        EnableWindow(Context->MoveUpHandle, target != 0);
-        EnableWindow(Context->MoveDownHandle, target != count - 1);
-    }
-
-    PhClearReference(&string);
 }
 
-// Moves the item at inactive listbox row InactiveIndex into the active list at
-// insert position ActiveInsertIndex (INT_ERROR or count appends).
-/**
- * Moves a column from the inactive list to the active list.
- *
- * \param Context The columns dialog context.
- * \param InactiveIndex The index of the item in the inactive list.
- * \param ActiveInsertIndex The insert index in the active list.
- */
 static VOID PhpColumnsShowItem(
     _In_ PCOLUMNS_DIALOG_CONTEXT Context,
     _In_ LONG InactiveIndex,
     _In_ LONG ActiveInsertIndex
     )
 {
-    LONG count;
-    PPH_STRING string;
+    PPH_TREENEW_COLUMN item = PhpColumnsGetItem(Context->InactiveWindowHandle, InactiveIndex);
+    PPH_TREENEW_COLUMN target = PhpColumnsGetItem(Context->ActiveWindowHandle, ActiveInsertIndex);
+    ULONG from = PhpColumnsIndexOf(Context->InactiveListArray, item);
+    ULONG to = target ? PhpColumnsIndexOf(Context->ActiveListArray, target) : Context->ActiveListArray->Count;
 
-    count = ListBox_GetCount(Context->InactiveWindowHandle);
-
-    if (InactiveIndex == LB_ERR || InactiveIndex >= count)
+    if (!item || from == ULONG_MAX || to == ULONG_MAX)
         return;
-
-    PhpColumnsSetHotItem(Context, NULL, LB_ERR);
-
-    string = PhGetListBoxString(Context->InactiveWindowHandle, InactiveIndex);
-
-    if (!PhIsNullOrEmptyString(string))
-    {
-        ULONG index = IndexOfStringInList(Context->InactiveListArray, string->Buffer);
-
-        if (index != ULONG_MAX)
-        {
-            PVOID item = Context->InactiveListArray->Items[index];
-            LONG activeCount = ListBox_GetCount(Context->ActiveWindowHandle);
-            ULONG arrayTo;
-
-            PhRemoveItemsList(Context->InactiveListArray, index, 1);
-
-            if (ActiveInsertIndex < 0 || ActiveInsertIndex >= activeCount)
-            {
-                arrayTo = Context->ActiveListArray->Count;
-                ActiveInsertIndex = activeCount;
-            }
-            else
-            {
-                PPH_STRING targetString = PhGetListBoxString(Context->ActiveWindowHandle, ActiveInsertIndex);
-
-                arrayTo = targetString ? IndexOfStringInList(Context->ActiveListArray, targetString->Buffer) : ULONG_MAX;
-                PhClearReference(&targetString);
-
-                if (arrayTo == ULONG_MAX)
-                    arrayTo = Context->ActiveListArray->Count;
-            }
-
-            PhInsertItemList(Context->ActiveListArray, arrayTo, item);
-
-            ListBox_DeleteString(Context->InactiveWindowHandle, InactiveIndex);
-            ListBox_InsertString(Context->ActiveWindowHandle, ActiveInsertIndex, item);
-        }
-
-        count--;
-
-        if (InactiveIndex >= count - 1)
-            InactiveIndex = count - 1;
-
-        if (InactiveIndex != LB_ERR)
-        {
-            ListBox_SetCurSel(Context->InactiveWindowHandle, InactiveIndex);
-        }
-    }
-
-    PhClearReference(&string);
+    PhRemoveItemsList(Context->InactiveListArray, from, 1);
+    PhInsertItemList(Context->ActiveListArray, to, item);
+    PhpColumnsRefreshLists(Context);
 }
 
-// Moves the item at active listbox row ActiveIndex back into the (sorted) inactive list.
-/**
- * Moves a column from the active list to the inactive list.
- *
- * \param Context The columns dialog context.
- * \param ActiveIndex The index of the item in the active list.
- */
 static VOID PhpColumnsHideItem(
     _In_ PCOLUMNS_DIALOG_CONTEXT Context,
     _In_ LONG ActiveIndex
     )
 {
-    LONG count;
-    PPH_STRING string;
+    PPH_TREENEW_COLUMN item = PhpColumnsGetItem(Context->ActiveWindowHandle, ActiveIndex);
+    ULONG from = PhpColumnsIndexOf(Context->ActiveListArray, item);
 
-    count = ListBox_GetCount(Context->ActiveWindowHandle);
-
-    if (ActiveIndex == LB_ERR || ActiveIndex >= count)
+    if (!item || from == ULONG_MAX)
         return;
-
-    PhpColumnsSetHotItem(Context, NULL, LB_ERR);
-
-    string = PhGetListBoxString(Context->ActiveWindowHandle, ActiveIndex);
-
-    if (!PhIsNullOrEmptyString(string))
-    {
-        ULONG index = IndexOfStringInList(Context->ActiveListArray, string->Buffer);
-
-        if (index != ULONG_MAX)
-        {
-            PVOID item = Context->ActiveListArray->Items[index];
-
-            // Remove from active array, insert into inactive
-            PhRemoveItemsList(Context->ActiveListArray, index, 1);
-            PhAddItemList(Context->InactiveListArray, item);
-
-            // Delete from active list
-            ListBox_DeleteString(Context->ActiveWindowHandle, ActiveIndex);
-            // Sort the inactive list with the new entry and refresh
-            PhpColumnsResetListBox(Context->InactiveWindowHandle, 0, Context->InactiveListArray, PhpInactiveColumnsCompareNameTn);
-        }
-
-        count--;
-
-        if (ActiveIndex >= count - 1)
-            ActiveIndex = count - 1;
-
-        if (ActiveIndex != LB_ERR)
-        {
-            ListBox_SetCurSel(Context->ActiveWindowHandle, ActiveIndex);
-        }
-    }
-
-    PhClearReference(&string);
+    PhRemoveItemsList(Context->ActiveListArray, from, 1);
+    PhAddItemList(Context->InactiveListArray, item);
+    PhpColumnsRefreshLists(Context);
 }
 
 // Returns the insert row under the cursor for a drag list target, count when the
@@ -858,6 +751,7 @@ VOID NTAPI PhpInactiveColumnsSearchControlCallback(
 
     PhpColumnsSetHotItem(context, NULL, LB_ERR);
 
+    context->InactiveMatchHandle = MatchHandle;
     PhpColumnsResetListBox(
         context->InactiveWindowHandle,
         MatchHandle,
@@ -882,6 +776,7 @@ VOID NTAPI PhpActiveColumnsSearchControlCallback(
 
     PhpColumnsSetHotItem(context, NULL, LB_ERR);
 
+    context->ActiveMatchHandle = MatchHandle;
     PhpColumnsResetListBox(
         context->ActiveWindowHandle,
         MatchHandle,
@@ -946,6 +841,14 @@ static LRESULT CALLBACK PhpColumnsListBoxWndProc(
                 context->MouseTracking = !!TrackMouseEvent(&trackMouseEvent);
             }
         }
+        break;
+    case WM_MOUSEWHEEL:
+    case WM_VSCROLL:
+    case WM_KEYDOWN:
+        // Scrolling can change the row under a stationary cursor.
+        if (context->TooltipHandle)
+            SendMessage(context->TooltipHandle, TTM_POP, 0, 0);
+        PhpColumnsSetHotItem(context, NULL, LB_ERR);
         break;
     case WM_MOUSELEAVE:
         {
@@ -1019,7 +922,7 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
             PhCreateSearchControl(
                 hwndDlg,
                 context->SearchInactiveHandle,
-                L"Inactive columns...",
+                PhTranslateUiText(L"Inactive columns..."),
                 PhpInactiveColumnsSearchControlCallback,
                 context
                 );
@@ -1027,7 +930,7 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
             PhCreateSearchControl(
                 hwndDlg,
                 context->SearchActiveHandle,
-                L"Active columns...",
+                PhTranslateUiText(L"Active columns..."),
                 PhpActiveColumnsSearchControlCallback,
                 context
                 );
@@ -1047,6 +950,26 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
             PhSetWindowContext(context->ActiveWindowHandle, PH_WINDOW_CONTEXT_DEFAULT, context);
             context->InactiveListWindowProc = (WNDPROC)SetWindowLongPtr(context->InactiveWindowHandle, GWLP_WNDPROC, (LONG_PTR)PhpColumnsListBoxWndProc);
             context->ActiveListWindowProc = (WNDPROC)SetWindowLongPtr(context->ActiveWindowHandle, GWLP_WNDPROC, (LONG_PTR)PhpColumnsListBoxWndProc);
+
+            // Each list is a tooltip tool; text is resolved from the hovered stable column ID.
+            if (context->ProcessColumns)
+            {
+                TOOLINFO tool = { sizeof(TOOLINFO) };
+                context->TooltipHandle = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
+                    WS_POPUP | TTS_ALWAYSTIP | TTS_NOPREFIX, CW_USEDEFAULT, CW_USEDEFAULT,
+                    CW_USEDEFAULT, CW_USEDEFAULT, hwndDlg, NULL, PhInstanceHandle, NULL);
+                if (context->TooltipHandle)
+                {
+                    tool.uFlags = TTF_IDISHWND | TTF_SUBCLASS;
+                    tool.hwnd = hwndDlg;
+                    tool.lpszText = LPSTR_TEXTCALLBACK;
+                    tool.uId = (UINT_PTR)context->InactiveWindowHandle;
+                    SendMessage(context->TooltipHandle, TTM_ADDTOOL, 0, (LPARAM)&tool);
+                    tool.uId = (UINT_PTR)context->ActiveWindowHandle;
+                    SendMessage(context->TooltipHandle, TTM_ADDTOOL, 0, (LPARAM)&tool);
+                    SendMessage(context->TooltipHandle, TTM_SETMAXTIPWIDTH, 0, PhScaleToDisplay(420, dpiValue));
+                }
+            }
 
             Button_Enable(context->HideWindowHandle, FALSE);
             Button_Enable(context->ShowWindowHandle, FALSE);
@@ -1103,7 +1026,7 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
                         }
                         else
                         {
-                            PhAddItemList(context->InactiveListArray, (PWSTR)column.Text);
+                            PhAddItemList(context->InactiveListArray, copy);
                         }
                     }
 
@@ -1128,8 +1051,8 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
                     {
                         PPH_TREENEW_COLUMN copy = displayOrderList->Items[i];
 
-                        PhAddItemList(context->ActiveListArray, (PWSTR)copy->Text);
-                        ListBox_InsertString(context->ActiveWindowHandle, i, copy->Text);
+                        PhAddItemList(context->ActiveListArray, copy);
+                        PhpColumnsInsertItem(context->ActiveWindowHandle, i, copy);
                     }
                 }
 
@@ -1148,6 +1071,11 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
         {
             PhpColumnsSetDragInsert(context, NULL, INT_ERROR);
             PhpColumnsDestroyDragImage(context, hwndDlg);
+            if (context->TooltipHandle)
+            {
+                DestroyWindow(context->TooltipHandle);
+                context->TooltipHandle = NULL;
+            }
 
             for (ULONG i = 0; i < context->Columns->Count; i++)
                 PhFree(context->Columns->Items[i]);
@@ -1175,8 +1103,40 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
             if (context->ControlFont) DeleteFont(context->ControlFont);
             context->ControlFont = PhCreateMessageFont(LOWORD(wParam));
 
+            if (context->TooltipHandle)
+                SendMessage(context->TooltipHandle, TTM_SETMAXTIPWIDTH, 0, PhScaleToDisplay(420, LOWORD(wParam)));
             ListBox_SetItemHeight(context->InactiveWindowHandle, 0, PhScaleToDisplay(16, LOWORD(wParam)));
             ListBox_SetItemHeight(context->ActiveWindowHandle, 0, PhScaleToDisplay(16, LOWORD(wParam)));
+        }
+        break;
+    case WM_NOTIFY:
+        {
+            LPNMHDR header = (LPNMHDR)lParam;
+            if (header->hwndFrom == context->TooltipHandle && header->code == TTN_GETDISPINFO)
+            {
+                LPNMTTDISPINFO info = (LPNMTTDISPINFO)lParam;
+                PPH_TREENEW_COLUMN column = NULL;
+                info->lpszText = NULL;
+                HWND listHandle = (HWND)header->idFrom;
+                POINT point;
+                if (context->DragItemIndex == LB_ERR &&
+                    (listHandle == context->ActiveWindowHandle || listHandle == context->InactiveWindowHandle) &&
+                    GetCursorPos(&point) && ScreenToClient(listHandle, &point))
+                {
+                    RECT rect;
+                    if (GetClientRect(listHandle, &rect) && PtInRect(&rect, point))
+                    {
+                        LRESULT hit = SendMessage(listHandle, LB_ITEMFROMPOINT, 0, MAKELPARAM(point.x, point.y));
+                        LONG index = (LONG)(SHORT)LOWORD(hit);
+                        if (HIWORD(hit) == 0 &&
+                            ListBox_GetItemRect(listHandle, index, &rect) != LB_ERR && PtInRect(&rect, point))
+                            column = PhpColumnsGetItem(listHandle, index);
+                    }
+                }
+                if (column)
+                    info->lpszText = (PWSTR)PhpGetProcessColumnDescription(column->Id);
+                return TRUE;
+            }
         }
         break;
     case WM_COMMAND:
@@ -1210,7 +1170,7 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
                             PPH_TREENEW_COLUMN column = context->Columns->Items[i];
                             ULONG index;
 
-                            index = IndexOfStringInList(context->ActiveListArray, column->Text);
+                            index = PhpColumnsIndexOf(context->ActiveListArray, column);
                             column->Visible = index != ULONG_MAX;
 
                             TreeNew_SetColumn(context->ControlHandle, TN_COLUMN_FLAG_VISIBLE, column);
@@ -1270,12 +1230,9 @@ INT_PTR CALLBACK PhpColumnsDlgProc(
                             LONG sel = ListBox_GetCurSel(context->ActiveWindowHandle);
                             LONG count = ListBox_GetCount(context->ActiveWindowHandle);
 
-                            if (sel != LB_ERR)
-                            {
-                                EnableWindow(context->HideWindowHandle, sel != 0);
-                                EnableWindow(context->MoveUpHandle, sel != 0);
-                                EnableWindow(context->MoveDownHandle, sel != count - 1);
-                            }
+                            EnableWindow(context->HideWindowHandle, sel != LB_ERR);
+                            EnableWindow(context->MoveUpHandle, sel != LB_ERR && sel != 0);
+                            EnableWindow(context->MoveDownHandle, sel != LB_ERR && sel != count - 1);
                         }
                         break;
                     }

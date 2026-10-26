@@ -9150,24 +9150,39 @@ BOOLEAN PhTnpGetHeaderTooltipText(
 
     if (Context->TooltipColumnId != column->Id)
     {
-        // Determine if the tooltip needs to be shown.
+        PH_TREENEW_GET_HEADER_TOOLTIP getHeaderTooltip;
 
-        text = column->Text;
-        textCount = PhCountStringZ(text);
+        getHeaderTooltip.Column = column;
+        getHeaderTooltip.Text = NULL;
 
-        if (!(hdc = GetDC(Context->Handle)))
-            return FALSE;
+        if (Context->Callback(Context->Handle, TreeNewGetHeaderTooltip,
+            &getHeaderTooltip, NULL, Context->CallbackContext) &&
+            getHeaderTooltip.Text && getHeaderTooltip.Text[0])
+        {
+            // Descriptions are useful even when the heading is not truncated.
+            text = getHeaderTooltip.Text;
+            textCount = PhCountStringZ(text);
+        }
+        else
+        {
+            // Existing controls/plugins keep the clipped-heading behavior.
+            text = column->Text;
+            textCount = PhCountStringZ(text);
 
-        oldFont = SelectFont(hdc, Context->Font);
-        result = GetTextExtentPoint32(hdc, text, (ULONG)textCount, &textSize);
-        if (oldFont) SelectFont(hdc, oldFont);
-        ReleaseDC(Context->Handle, hdc);
+            if (!(hdc = GetDC(Context->Handle)))
+                return FALSE;
 
-        if (!result)
-            return FALSE;
+            oldFont = SelectFont(hdc, Context->Font);
+            result = GetTextExtentPoint32(hdc, text, (ULONG)textCount, &textSize);
+            if (oldFont) SelectFont(hdc, oldFont);
+            ReleaseDC(Context->Handle, hdc);
 
-        if (textSize.cx + Context->TextMarginPadding <= itemRect.right - itemRect.left) // HACK: Magic values (same as our cell margins?)
-            return FALSE;
+            if (!result)
+                return FALSE;
+
+            if (textSize.cx + Context->TextMarginPadding <= itemRect.right - itemRect.left)
+                return FALSE;
+        }
 
         Context->TooltipColumnId = column->Id;
         PhMoveReference(&Context->TooltipText, PhCreateStringEx(text, textCount * sizeof(WCHAR)));

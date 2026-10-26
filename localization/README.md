@@ -94,3 +94,45 @@ CI. Before distributing binaries, verify on Windows:
    mode; confirm fallback/error behavior and no false persistence success.
 6. Exercise menu accelerators and formatted messages; compare IDs/actions with
    upstream English behavior. OS-provided buttons can follow the OS display language.
+
+## Process-column discovery and explanations
+
+The process tree's built-in columns now have stable `PHPRTLC_*` metadata in
+`SystemInformer/include/proccolmeta.h`: original English name, Chinese name,
+search aliases, and accurate English/Chinese explanations. Both chooser search
+boxes match either language regardless of the selected UI language; search case,
+regex and fuzzy options keep the existing search-control semantics. For example,
+`Private WS`, `private working set` and `私有工作集` find the same column.
+
+Hover a process column heading or an active/inactive chooser entry to read its
+explanation. Private bytes are private **committed** memory, whereas Private WS is
+the private portion **currently resident in physical RAM**. If collapsed-tree
+aggregation is enabled, supported numeric columns may show a subtree aggregate
+instead of only the parent process value. Descriptions cover all
+109 built-in process column IDs (the fixed Name column is not movable in the
+chooser). Plugin/unknown column IDs and other tree types retain their displayed
+name search and existing tooltip behavior; no invented metric meaning is supplied.
+
+Chooser arrays now retain column objects/IDs, not translated captions. This avoids
+mixing two different columns with the same displayed name. Moving/showing/hiding
+columns preserves both search filters; an item can disappear from the destination
+view when it does not match that view's filter. Clear the filter to see it again.
+Cancel/Esc still dismisses without applying layout changes; only OK applies them.
+
+The shared search box defers filtering during IME composition, leaves candidate
+navigation/Enter/Escape to the IME, then updates from committed Unicode text. This
+is not a promise that every Windows IME/TSF version has been exercised.
+
+Additional checks:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_column_*.py' -v
+```
+
+The portable C shims execute actual matcher/identity/movement, metadata, IME
+message-handling and header-tooltip code, using mocked OS controls. Before release,
+check the native Windows build and manually test Microsoft Pinyin and a TSF IME:
+start/commit/cancel composition, paste Chinese, English/Chinese searches in both UI
+languages, no-match, filtered show/hide/move/drag, duplicate-caption columns,
+Cancel/reopen, hovering across rows and headers at 100/150/200% DPI, and unknown
+plugin columns. No native Windows UI verification is implied by the portable tests.

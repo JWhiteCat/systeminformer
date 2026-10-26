@@ -20,6 +20,7 @@
 
 #include <phapp.h>
 #include <proctree.h>
+#include <proccolmeta.h>
 
 #include <appresolver.h>
 #include <cpysave.h>
@@ -67,6 +68,12 @@ BOOLEAN PhpShouldShowImageCoherency(
     );
 
 static HWND ProcessTreeListHandle;
+
+BOOLEAN PhIsProcessTreeList(_In_ HWND WindowHandle)
+{
+    return WindowHandle && WindowHandle == ProcessTreeListHandle;
+}
+
 static ULONG ProcessTreeListSortColumn;
 static PH_SORT_ORDER ProcessTreeListSortOrder;
 static PH_CM_MANAGER ProcessTreeListCm;
@@ -5330,6 +5337,12 @@ BOOLEAN NTAPI PhpProcessTreeNewCallback(
                 PhUpdateProcessNode(node);
         }
         return TRUE;
+    case TreeNewGetHeaderTooltip:
+        {
+            PPH_TREENEW_GET_HEADER_TOOLTIP tooltip = Parameter1;
+            tooltip->Text = PhpGetProcessColumnDescription(tooltip->Column->Id);
+            return tooltip->Text != NULL;
+        }
     case TreeNewGetHeaderText:
         {
             PPH_TREENEW_GET_HEADER_TEXT getHeaderText = Parameter1;

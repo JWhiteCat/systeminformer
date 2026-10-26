@@ -467,6 +467,9 @@
     <ClInclude Include="include\phuisup.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\proccolmeta.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="include\proctree.h">
       <Filter>Headers</Filter>
     </ClInclude>

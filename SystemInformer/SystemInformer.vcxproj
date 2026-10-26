@@ -387,6 +387,7 @@
         <ClInclude Include="include\procprp.h" />
         <ClInclude Include="include\procprpp.h" />
         <ClInclude Include="include\procprv.h" />
+        <ClInclude Include="include\proccolmeta.h" />
         <ClInclude Include="include\proctree.h" />
         <ClInclude Include="include\srvlist.h" />
         <ClInclude Include="include\srvprv.h" />
