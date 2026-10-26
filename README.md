@@ -60,6 +60,13 @@ to build the System Informer source code.
 See the [build readme](./build/README.md) for more information or if you're
 having trouble building.
 
+## 简体中文 / English
+
+This fork supports a persistent UI language choice under **Options → General → Language…**.
+Select **简体中文** or **English**, confirm, and restart to apply.
+英文和简体中文可在设置中切换；取消不会保存，未翻译文本回退到英文。
+See [localization coverage, maintenance and validation](localization/README.md).
+
 ## Enhancements/Bugs
 
 Please use the

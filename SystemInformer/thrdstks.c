@@ -1352,21 +1352,21 @@ BOOLEAN NTAPI PhpThreadStacksTreeNewCallback(
             node = (PPH_THREAD_STACKS_NODE)contextMenuEvent->Node;
 
             menu = PhCreateEMenu();
-            PhInsertEMenuItem(menu, gotoProcess = PhCreateEMenuItem(0, 1, L"Go to process...", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, gotoThread = PhCreateEMenuItem(0, 2, L"Go to thread...", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, gotoProcess = PhCreateEMenuItem(0, 1, PhTranslateUiText(L"Go to process..."), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, gotoThread = PhCreateEMenuItem(0, 2, PhTranslateUiText(L"Go to thread..."), NULL, NULL), ULONG_MAX);
             PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 3, L"Expand all", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 4, L"Collapse all", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 3, PhTranslateUiText(L"Expand all"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 4, PhTranslateUiText(L"Collapse all"), NULL, NULL), ULONG_MAX);
             PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 5, L"Hide user frames", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, hideSystemFrames = PhCreateEMenuItem(0, 6, L"Hide system frames", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, hideInlineFrames = PhCreateEMenuItem(0, 7, L"Hide inline frames", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, hideUserFrames = PhCreateEMenuItem(0, 5, PhTranslateUiText(L"Hide user frames"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, hideSystemFrames = PhCreateEMenuItem(0, 6, PhTranslateUiText(L"Hide system frames"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, hideInlineFrames = PhCreateEMenuItem(0, 7, PhTranslateUiText(L"Hide inline frames"), NULL, NULL), ULONG_MAX);
             PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-            PhInsertEMenuItem(menu, highlightUserFrames = PhCreateEMenuItem(0, 8, L"Highlight user frames", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, highlightSystemFrames = PhCreateEMenuItem(0, 9, L"Highlight system frames", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, highlightInlineFrames = PhCreateEMenuItem(0, 10, L"Highlight inline frames", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, highlightUserFrames = PhCreateEMenuItem(0, 8, PhTranslateUiText(L"Highlight user frames"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, highlightSystemFrames = PhCreateEMenuItem(0, 9, PhTranslateUiText(L"Highlight system frames"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, highlightInlineFrames = PhCreateEMenuItem(0, 10, PhTranslateUiText(L"Highlight inline frames"), NULL, NULL), ULONG_MAX);
             PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 100, L"Copy", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 100, PhTranslateUiText(L"Copy"), NULL, NULL), ULONG_MAX);
             PhInsertCopyCellEMenuItem(menu, 100, hwnd, contextMenuEvent->Column);
 
             if (node)
@@ -1565,27 +1565,27 @@ VOID PhpInitializeThreadStacksTree(
 
     TreeNew_SetRedraw(Context->TreeNewHandle, FALSE);
 
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_SYMBOL, TRUE, L"Symbol", 250, PH_ALIGN_LEFT, 0, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_SYMBOL, TRUE, PhTranslateUiText(L"Symbol"), 250, PH_ALIGN_LEFT, 0, 0);
     PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PROCESSID, TRUE, L"PID", 80, PH_ALIGN_LEFT, 1, 0);
     PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_THREADID, TRUE, L"TID", 80, PH_ALIGN_LEFT, 2, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMENUMBER, TRUE, L"Frame", 80, PH_ALIGN_LEFT, 3, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_ARCHITECTURE, TRUE, L"Architecture", 100, PH_ALIGN_LEFT, 4, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMENUMBER, TRUE, PhTranslateUiText(L"Frame"), 80, PH_ALIGN_LEFT, 3, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_ARCHITECTURE, TRUE, PhTranslateUiText(L"Architecture"), 100, PH_ALIGN_LEFT, 4, 0);
 
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STACKADDRESS, FALSE, L"Stack address", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMEADDRESS, FALSE, L"Frame address", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER1, FALSE, L"Stack parameter #1", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER2, FALSE, L"Stack parameter #2", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER3, FALSE, L"Stack parameter #3", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER4, FALSE, L"Stack parameter #4", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_CONTROLADDRESS, FALSE, L"Control address", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_RETURNADDRESS, FALSE, L"Return address", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FILENAME, FALSE, L"File name", 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_LINETEXT, FALSE, L"Line number", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMEDISTANCE, FALSE, L"Frame distance", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STARTADDRESS, FALSE, L"Start address", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STARTADDRESSSYMBOL, FALSE, L"Start address (symbolic)", 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PROCESSNAME, FALSE, L"Process name", 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_THREADNAME, FALSE, L"Thread name", 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STACKADDRESS, FALSE, PhTranslateUiText(L"Stack address"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMEADDRESS, FALSE, PhTranslateUiText(L"Frame address"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER1, FALSE, PhTranslateUiText(L"Stack parameter #1"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER2, FALSE, PhTranslateUiText(L"Stack parameter #2"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER3, FALSE, PhTranslateUiText(L"Stack parameter #3"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PARAMETER4, FALSE, PhTranslateUiText(L"Stack parameter #4"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_CONTROLADDRESS, FALSE, PhTranslateUiText(L"Control address"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_RETURNADDRESS, FALSE, PhTranslateUiText(L"Return address"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FILENAME, FALSE, PhTranslateUiText(L"File name"), 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_LINETEXT, FALSE, PhTranslateUiText(L"Line number"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_FRAMEDISTANCE, FALSE, PhTranslateUiText(L"Frame distance"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STARTADDRESS, FALSE, PhTranslateUiText(L"Start address"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_STARTADDRESSSYMBOL, FALSE, PhTranslateUiText(L"Start address (symbolic)"), 100, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_PROCESSNAME, FALSE, PhTranslateUiText(L"Process name"), 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_THREAD_STACKS_COLUMN_THREADNAME, FALSE, PhTranslateUiText(L"Thread name"), 250, PH_ALIGN_LEFT, ULONG_MAX, 0);
 
     TreeNew_SetRedraw(Context->TreeNewHandle, TRUE);
     //TreeNew_SetTriState(Context->TreeNewHandle, FALSE);

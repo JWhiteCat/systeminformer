@@ -1027,6 +1027,9 @@
 #define ID_MENUBAR_ELEVATE              10336
 
 #define IDD_THRDSHADOWSTACK             298
+#define IDD_OPTLANGUAGE                 299
+#define IDC_LANGUAGE                    1570
+#define IDC_UILANGUAGE                  1571
 #define IDDYNAMIC                       50000
 #define IDPLUGINS                       55000
 
@@ -1034,9 +1037,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        299
+#define _APS_NEXT_RESOURCE_VALUE        300
 #define _APS_NEXT_COMMAND_VALUE         10355
-#define _APS_NEXT_CONTROL_VALUE         1570
+#define _APS_NEXT_CONTROL_VALUE         1572
 #define _APS_NEXT_SYMED_VALUE           170
 #endif
 #endif

@@ -2277,8 +2277,8 @@ static INT_PTR CALLBACK EtWbclGeneralDlgProc(
             listViewHandle = GetDlgItem(WindowHandle, IDC_WBCL_PROP_LIST);
 
             PhSetListViewStyle(listViewHandle, TRUE, TRUE);
-            PhAddListViewColumn(listViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, L"Property");
-            PhAddListViewColumn(listViewHandle, 1, 1, 1, LVCFMT_LEFT, 175, L"Value");
+            PhAddListViewColumn(listViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Property"));
+            PhAddListViewColumn(listViewHandle, 1, 1, 1, LVCFMT_LEFT, 175, PhTranslateUiText(L"Value"));
             PhSetExtendedListView(listViewHandle);
 
             PhAddListViewItem(listViewHandle, MAXINT, L"Index", NULL);
@@ -2350,7 +2350,7 @@ VOID EtWbclShowEntryProperties(_In_ HWND ParentWindowHandle, _In_ PWBCL_ENTRY En
     for (ULONG i = 0; i < 2; i++) { pages[i].dwSize = sizeof(PROPSHEETPAGE); pages[i].hInstance = PluginInstance->DllBase; pages[i].lParam = (LPARAM)Entry; }
     pages[0].pszTemplate = MAKEINTRESOURCE(IDD_WBCL_GENERAL); pages[0].pfnDlgProc = EtWbclGeneralDlgProc;
     pages[1].pszTemplate = MAKEINTRESOURCE(IDD_WBCL_RAW); pages[1].pfnDlgProc = EtWbclRawDlgProc;
-    handles[0] = CreatePropertySheetPage(&pages[0]); handles[1] = CreatePropertySheetPage(&pages[1]);
+    handles[0] = PhCreatePropertySheetPage(&pages[0]); handles[1] = PhCreatePropertySheetPage(&pages[1]);
     header.dwFlags = PSH_PROPTITLE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP;
     header.hwndParent = ParentWindowHandle; header.hInstance = PluginInstance->DllBase; header.pszCaption = L"Boot log entry properties"; header.nPages = 2; header.phpage = handles;
     PhModalPropertySheet(&header);
@@ -2394,13 +2394,13 @@ INT_PTR CALLBACK EtWbclDlgProc(
             PhSetControlTheme(context->ListViewHandle, L"explorer");
             PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 50, L"#");
             PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 40, L"PCR");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 230, L"Event type");
-            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 60, L"Digest");
-            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 220, L"Digest value");
-            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 60, L"Size");
-            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 400, L"Details");
-            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 260, L"PCR after event");
-            PhAddListViewColumn(context->ListViewHandle, 8, 8, 8, LVCFMT_LEFT, 110, L"PCR state");
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 230, PhTranslateUiText(L"Event type"));
+            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 60, PhTranslateUiText(L"Digest"));
+            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 220, PhTranslateUiText(L"Digest value"));
+            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 60, PhTranslateUiText(L"Size"));
+            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 400, PhTranslateUiText(L"Details"));
+            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 260, PhTranslateUiText(L"PCR after event"));
+            PhAddListViewColumn(context->ListViewHandle, 8, 8, 8, LVCFMT_LEFT, 110, PhTranslateUiText(L"PCR state"));
     PhSetExtendedListView(context->ListViewHandle);
 
             ExtendedListView_SetCompareFunction(context->ListViewHandle, 0, EtWbclIndexCompareFunction);
@@ -2524,9 +2524,9 @@ INT_PTR CALLBACK EtWbclDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, L"&Properties", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, PhTranslateUiText(L"&Properties"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PHAPP_IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PHAPP_IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, PHAPP_IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

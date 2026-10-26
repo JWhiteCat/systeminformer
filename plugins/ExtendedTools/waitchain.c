@@ -465,8 +465,8 @@ INT_PTR CALLBACK WaitChainDlgProc(
                     if (selectedNode = WtcGetSelectedWaitNode(&context->TreeContext))
                     {
                         menu = PhCreateEMenu();
-                        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_WCT_MENU_GOTOPROCESS, L"Go to Process...", NULL, NULL), ULONG_MAX);
-                        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_WCT_MENU_GOTOTHREAD, L"Go to Thread...", NULL, NULL), ULONG_MAX);
+                        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_WCT_MENU_GOTOPROCESS, PhTranslateUiText(L"Go to Process..."), NULL, NULL), ULONG_MAX);
+                        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_WCT_MENU_GOTOTHREAD, PhTranslateUiText(L"Go to Thread..."), NULL, NULL), ULONG_MAX);
                         PhSetFlagsEMenuItem(menu, ID_WCT_MENU_PROPERTIES, PH_EMENU_DEFAULT, PH_EMENU_DEFAULT);
 
                         if (selectedNode->ThreadId > 0)
@@ -913,15 +913,15 @@ VOID WtcInitializeWaitTree(
     TreeNew_SetRedraw(WindowHandle, FALSE);
     TreeNew_SetCallback(WindowHandle, WtcWaitTreeNewCallback, Context);
 
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_TYPE, TRUE, L"Type", 80, PH_ALIGN_LEFT, 0, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_THREADID, TRUE, L"ThreadId", 50, PH_ALIGN_LEFT, 1, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_PROCESSID, TRUE, L"ProcessId", 50, PH_ALIGN_LEFT, 2, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_STATUS, TRUE, L"Status", 80, PH_ALIGN_LEFT, 3, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_CONTEXTSWITCH, TRUE, L"Context Switches", 70, PH_ALIGN_LEFT, 4, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_WAITTIME, TRUE, L"WaitTime", 60, PH_ALIGN_LEFT, 5, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_TIMEOUT, TRUE, L"Timeout", 60, PH_ALIGN_LEFT, 6, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_ALERTABLE, TRUE, L"Alertable", 50, PH_ALIGN_LEFT, 7, 0);
-    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_NAME, TRUE, L"Name", 100, PH_ALIGN_LEFT, 8, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_TYPE, TRUE, PhTranslateUiText(L"Type"), 80, PH_ALIGN_LEFT, 0, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_THREADID, TRUE, PhTranslateUiText(L"ThreadId"), 50, PH_ALIGN_LEFT, 1, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_PROCESSID, TRUE, PhTranslateUiText(L"ProcessId"), 50, PH_ALIGN_LEFT, 2, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_STATUS, TRUE, PhTranslateUiText(L"Status"), 80, PH_ALIGN_LEFT, 3, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_CONTEXTSWITCH, TRUE, PhTranslateUiText(L"Context Switches"), 70, PH_ALIGN_LEFT, 4, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_WAITTIME, TRUE, PhTranslateUiText(L"WaitTime"), 60, PH_ALIGN_LEFT, 5, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_TIMEOUT, TRUE, PhTranslateUiText(L"Timeout"), 60, PH_ALIGN_LEFT, 6, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_ALERTABLE, TRUE, PhTranslateUiText(L"Alertable"), 50, PH_ALIGN_LEFT, 7, 0);
+    PhAddTreeNewColumn(WindowHandle, TREE_COLUMN_ITEM_NAME, TRUE, PhTranslateUiText(L"Name"), 100, PH_ALIGN_LEFT, 8, 0);
 
     TreeNew_SetRedraw(WindowHandle, TRUE);
     TreeNew_SetTriState(WindowHandle, TRUE);

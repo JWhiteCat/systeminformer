@@ -215,9 +215,9 @@ INT_PTR CALLBACK PhpZombieProcessesDlgProc(
 
             PhSetListViewStyle(lvHandle, TRUE, TRUE);
             PhSetControlTheme(lvHandle, L"explorer");
-            PhAddListViewColumn(lvHandle, 0, 0, 0, LVCFMT_LEFT, 320, L"Process");
+            PhAddListViewColumn(lvHandle, 0, 0, 0, LVCFMT_LEFT, 320, PhTranslateUiText(L"Process"));
             PhAddListViewColumn(lvHandle, 1, 1, 1, LVCFMT_LEFT, 60, L"PID");
-            PhAddListViewColumn(lvHandle, 2, 2, 2, LVCFMT_RIGHT, 70, L"Handles");
+            PhAddListViewColumn(lvHandle, 2, 2, 2, LVCFMT_RIGHT, 70, PhTranslateUiText(L"Handles"));
 
             PhSetExtendedListView(lvHandle);
             PhLoadListViewColumnsFromSetting(SETTING_ZOMBIE_PROCESSES_LIST_VIEW_COLUMNS, lvHandle);
@@ -552,7 +552,7 @@ INT_PTR CALLBACK PhpZombieProcessesDlgProc(
                 if (PhGetSelectedListViewItemParams(PhZombieProcessesListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, PhZombieProcessesListViewHandle);
 
                     item = PhShowEMenu(

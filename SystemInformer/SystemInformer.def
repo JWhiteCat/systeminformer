@@ -1477,3 +1477,9 @@ EXPORTS
     KsiEnumerateProcessHandles
     KsiLevel
     KsiQueryHashInformationFile
+
+; UI localization
+    PhSetUiLanguage
+    PhGetUiLanguage
+    PhTranslateUiText
+    PhCreatePropertySheetPage

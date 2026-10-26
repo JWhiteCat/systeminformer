@@ -1870,13 +1870,13 @@ VOID PhInitializeTreeNewColumnMenuEx(
     Data->Selection = NULL;
     Data->ProcessedId = 0;
 
-    sizeColumnToFitMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_SIZE_COLUMN_TO_FIT_ID, L"Size column to fit", NULL, NULL);
-    sizeAllColumnsToFitMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_SIZE_ALL_COLUMNS_TO_FIT_ID, L"Size all columns to fit", NULL, NULL);
+    sizeColumnToFitMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_SIZE_COLUMN_TO_FIT_ID, PhTranslateUiText(L"Size column to fit"), NULL, NULL);
+    sizeAllColumnsToFitMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_SIZE_ALL_COLUMNS_TO_FIT_ID, PhTranslateUiText(L"Size all columns to fit"), NULL, NULL);
 
     if (!(Flags & PH_TN_COLUMN_MENU_NO_VISIBILITY))
     {
-        hideColumnMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_HIDE_COLUMN_ID, L"Hide column", NULL, NULL);
-        chooseColumnsMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_CHOOSE_COLUMNS_ID, L"Choose columns...", NULL, NULL);
+        hideColumnMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_HIDE_COLUMN_ID, PhTranslateUiText(L"Hide column"), NULL, NULL);
+        chooseColumnsMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_CHOOSE_COLUMNS_ID, PhTranslateUiText(L"Choose columns..."), NULL, NULL);
     }
 
     if (Flags & PH_TN_COLUMN_MENU_SHOW_RESET_SORT)
@@ -1887,7 +1887,7 @@ VOID PhInitializeTreeNewColumnMenuEx(
         TreeNew_GetSort(Data->TreeNewHandle, &sortColumn, &sortOrder);
 
         if (sortOrder != Data->DefaultSortOrder || (Data->DefaultSortOrder != NoSortOrder && sortColumn != Data->DefaultSortColumn))
-            resetSortMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_RESET_SORT_ID, L"Reset sort", NULL, NULL);
+            resetSortMenuItem = PhCreateEMenuItem(0, PH_TN_COLUMN_MENU_RESET_SORT_ID, PhTranslateUiText(L"Reset sort"), NULL, NULL);
     }
 
     PhInsertEMenuItem(Data->Menu, sizeColumnToFitMenuItem, ULONG_MAX);

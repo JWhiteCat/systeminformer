@@ -139,24 +139,24 @@ VOID PhpFixProcessServicesControls(
         {
         case SERVICE_RUNNING:
             {
-                PhSetWindowText(startButton, L"S&top");
-                PhSetWindowText(pauseButton, L"&Pause");
+                PhSetWindowText(startButton, PhTranslateUiText(L"S&top"));
+                PhSetWindowText(pauseButton, PhTranslateUiText(L"&Pause"));
                 EnableWindow(startButton, ServiceItem->ControlsAccepted & SERVICE_ACCEPT_STOP);
                 EnableWindow(pauseButton, ServiceItem->ControlsAccepted & SERVICE_ACCEPT_PAUSE_CONTINUE);
             }
             break;
         case SERVICE_PAUSED:
             {
-                PhSetWindowText(startButton, L"S&top");
-                PhSetWindowText(pauseButton, L"C&ontinue");
+                PhSetWindowText(startButton, PhTranslateUiText(L"S&top"));
+                PhSetWindowText(pauseButton, PhTranslateUiText(L"C&ontinue"));
                 EnableWindow(startButton, ServiceItem->ControlsAccepted & SERVICE_ACCEPT_STOP);
                 EnableWindow(pauseButton, ServiceItem->ControlsAccepted & SERVICE_ACCEPT_PAUSE_CONTINUE);
             }
             break;
         case SERVICE_STOPPED:
             {
-                PhSetWindowText(startButton, L"&Start");
-                PhSetWindowText(pauseButton, L"&Pause");
+                PhSetWindowText(startButton, PhTranslateUiText(L"&Start"));
+                PhSetWindowText(pauseButton, PhTranslateUiText(L"&Pause"));
                 EnableWindow(startButton, TRUE);
                 EnableWindow(pauseButton, FALSE);
             }
@@ -166,8 +166,8 @@ VOID PhpFixProcessServicesControls(
         case SERVICE_PAUSE_PENDING:
         case SERVICE_STOP_PENDING:
             {
-                PhSetWindowText(startButton, L"&Start");
-                PhSetWindowText(pauseButton, L"&Pause");
+                PhSetWindowText(startButton, PhTranslateUiText(L"&Start"));
+                PhSetWindowText(pauseButton, PhTranslateUiText(L"&Pause"));
                 EnableWindow(startButton, FALSE);
                 EnableWindow(pauseButton, FALSE);
             }
@@ -187,8 +187,8 @@ VOID PhpFixProcessServicesControls(
     }
     else
     {
-        PhSetWindowText(startButton, L"&Start");
-        PhSetWindowText(pauseButton, L"&Pause");
+        PhSetWindowText(startButton, PhTranslateUiText(L"&Start"));
+        PhSetWindowText(pauseButton, PhTranslateUiText(L"&Pause"));
         EnableWindow(startButton, FALSE);
         EnableWindow(pauseButton, FALSE);
         PhSetWindowText(descriptionLabel, L"");
@@ -336,9 +336,9 @@ INT_PTR CALLBACK PhpServicesPageProc(
 
             PhSetListViewStyle(context->ListViewHandle, TRUE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, L"Name");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 220, L"Display name");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 220, L"File name");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 220, PhTranslateUiText(L"Display name"));
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 220, PhTranslateUiText(L"File name"));
             PhSetExtendedListView(context->ListViewHandle);
 
             if (PhTreeWindowFont)
@@ -576,10 +576,10 @@ INT_PTR CALLBACK PhpServicesPageProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, L"Go to service", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, PhTranslateUiText(L"Go to service"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
                     PhServiceListInsertContextMenu(hwndDlg, menu, (PPH_SERVICE_ITEM*)listviewItems, numberOfItems);
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

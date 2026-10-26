@@ -1565,6 +1565,9 @@ VOID PhInitializeAppSettings(
 
     PhUpdateCachedSettings();
 
+    // Freeze the UI language for this session; setting changes require a restart.
+    PhSetUiLanguage(PhGetIntegerSetting(SETTING_UI_LANGUAGE));
+
     // Apply basic global settings.
     PhPluginsEnabled = !!PhGetIntegerSetting(SETTING_ENABLE_PLUGINS);
     PhMaxSizeUnit = PhGetIntegerSetting(SETTING_MAX_SIZE_UNIT);

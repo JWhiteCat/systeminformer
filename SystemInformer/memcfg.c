@@ -1020,19 +1020,19 @@ INT_PTR CALLBACK PhCfgBitmapDlgProc(
             PhSetListViewStyle(context->ListViewHandle, TRUE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
             PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 50, L"#");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 55, L"Bitmap");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 110, L"Type");
-            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 120, L"Address");
-            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 120, L"End");
-            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 70, L"Value");
-            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 260, L"Symbol");
-            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 120, L"Allocation base");
-            PhAddListViewColumn(context->ListViewHandle, 8, 8, 8, LVCFMT_LEFT, 120, L"Region base");
-            PhAddListViewColumn(context->ListViewHandle, 9, 9, 9, LVCFMT_RIGHT, 90, L"Region size");
-            PhAddListViewColumn(context->ListViewHandle, 10, 10, 10, LVCFMT_LEFT, 90, L"Memory type");
-            PhAddListViewColumn(context->ListViewHandle, 11, 11, 11, LVCFMT_LEFT, 80, L"State");
-            PhAddListViewColumn(context->ListViewHandle, 12, 12, 12, LVCFMT_LEFT, 90, L"Protection");
-            PhAddListViewColumn(context->ListViewHandle, 13, 13, 13, LVCFMT_LEFT, 260, L"Mapped file");
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 55, PhTranslateUiText(L"Bitmap"));
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 110, PhTranslateUiText(L"Type"));
+            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 120, PhTranslateUiText(L"Address"));
+            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 120, PhTranslateUiText(L"End"));
+            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 70, PhTranslateUiText(L"Value"));
+            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 260, PhTranslateUiText(L"Symbol"));
+            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 120, PhTranslateUiText(L"Allocation base"));
+            PhAddListViewColumn(context->ListViewHandle, 8, 8, 8, LVCFMT_LEFT, 120, PhTranslateUiText(L"Region base"));
+            PhAddListViewColumn(context->ListViewHandle, 9, 9, 9, LVCFMT_RIGHT, 90, PhTranslateUiText(L"Region size"));
+            PhAddListViewColumn(context->ListViewHandle, 10, 10, 10, LVCFMT_LEFT, 90, PhTranslateUiText(L"Memory type"));
+            PhAddListViewColumn(context->ListViewHandle, 11, 11, 11, LVCFMT_LEFT, 80, PhTranslateUiText(L"State"));
+            PhAddListViewColumn(context->ListViewHandle, 12, 12, 12, LVCFMT_LEFT, 90, PhTranslateUiText(L"Protection"));
+            PhAddListViewColumn(context->ListViewHandle, 13, 13, 13, LVCFMT_LEFT, 260, PhTranslateUiText(L"Mapped file"));
             PhSetExtendedListView(context->ListViewHandle);
             PhLoadListViewColumnsFromSetting(SETTING_MEMORY_CFG_LIST_VIEW_COLUMNS, context->ListViewHandle);
             PhLoadListViewSortColumnsFromSetting(SETTING_MEMORY_CFG_LIST_VIEW_SORT, context->ListViewHandle);
@@ -1137,9 +1137,9 @@ INT_PTR CALLBACK PhCfgBitmapDlgProc(
                         break;
 
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, imageItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_IMAGE_TARGETS, L"Show image CFG targets", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, modifiedItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_MODIFIED_TARGETS, L"Show modified/allowed targets", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, allValidItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_ALL_VALID_RANGES, L"Show all-valid (no CFG) ranges", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, imageItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_IMAGE_TARGETS, PhTranslateUiText(L"Show image CFG targets"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, modifiedItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_MODIFIED_TARGETS, PhTranslateUiText(L"Show modified/allowed targets"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, allValidItem = PhCreateEMenuItem(0, PH_CFG_MENU_SHOW_ALL_VALID_RANGES, PhTranslateUiText(L"Show all-valid (no CFG) ranges"), NULL, NULL), ULONG_MAX);
 
                     if (context->ShowImageTargets)
                         imageItem->Flags |= PH_EMENU_CHECKED;
@@ -1406,7 +1406,7 @@ INT_PTR CALLBACK PhCfgBitmapDlgProc(
                 if (ListView_GetSelectedCount(context->ListViewHandle) > 0)
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

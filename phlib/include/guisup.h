@@ -2300,6 +2300,13 @@ PhDialogBox(
     );
 
 PHLIBAPI
+HPROPSHEETPAGE
+NTAPI
+PhCreatePropertySheetPage(
+    _In_ LPCPROPSHEETPAGE PropSheetPage
+    );
+
+PHLIBAPI
 HMENU
 NTAPI
 PhLoadMenu(

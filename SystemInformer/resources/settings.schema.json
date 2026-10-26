@@ -12,6 +12,12 @@
         "https://example.com/systeminformer/SystemInformer.exe.settings.schema.json"
       ]
     },
+    "UiLanguage": {
+      "description": "Display language, applied at startup: 0 = English, 1 = Simplified Chinese. Unknown values fall back to English. Stored as a hexadecimal integer string.",
+      "type": "string",
+      "enum": ["0", "1"],
+      "default": "0"
+    },
     "AllowOnlyOneInstance": {
       "description": "Boolean-like flag stored as '0' or '1'.\n\nSetting: When enabled (1), allow only one running instance; when disabled (0), multiple instances may be launched.",
       "anyOf": [

@@ -2982,7 +2982,7 @@ BOOLEAN NTAPI PhpInformerTreeNewCallback(
             NT_ASSERT(context);
 
             menu = PhCreateEMenu();
-            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy\bCtrl+C", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy\bCtrl+C"), NULL, NULL), ULONG_MAX);
             PhInsertCopyCellEMenuItem(menu, IDC_COPY, context->TreeNewHandle, contextMenu->Column);
 
             selectedItem = PhShowEMenu(
@@ -3046,20 +3046,20 @@ VOID PhpInformerInitializeColumns(
 
     TreeNew_SetSort(tn, PHIC_TIME, NoSortOrder);
 
-    PhAddTreeNewColumn(tn, PHIC_TIME, TRUE, L"Time", 140, PH_ALIGN_RIGHT, 0, DT_RIGHT);
-    PhAddTreeNewColumn(tn, PHIC_DURATION, FALSE, L"Duration", 70, PH_ALIGN_RIGHT, 1, DT_RIGHT);
-    PhAddTreeNewColumn(tn, PHIC_PROCESS,TRUE, L"Process", 120, PH_ALIGN_LEFT, 2, 0);
+    PhAddTreeNewColumn(tn, PHIC_TIME, TRUE, PhTranslateUiText(L"Time"), 140, PH_ALIGN_RIGHT, 0, DT_RIGHT);
+    PhAddTreeNewColumn(tn, PHIC_DURATION, FALSE, PhTranslateUiText(L"Duration"), 70, PH_ALIGN_RIGHT, 1, DT_RIGHT);
+    PhAddTreeNewColumn(tn, PHIC_PROCESS,TRUE, PhTranslateUiText(L"Process"), 120, PH_ALIGN_LEFT, 2, 0);
     PhAddTreeNewColumn(tn, PHIC_PID, TRUE, L"PID", 50, PH_ALIGN_RIGHT, 3, DT_RIGHT);
     PhAddTreeNewColumn(tn, PHIC_TID, TRUE, L"TID", 50, PH_ALIGN_RIGHT, 4, DT_RIGHT);
-    PhAddTreeNewColumn(tn, PHIC_START_KEY, FALSE, L"Start key", 140, PH_ALIGN_LEFT, 5, 0);
-    PhAddTreeNewColumn(tn, PHIC_ATTACHED_PROCESS, FALSE, L"Attached process", 120, PH_ALIGN_LEFT, 6, 0);
-    PhAddTreeNewColumn(tn, PHIC_ATTACHED_PID, FALSE, L"Attached PID", 60, PH_ALIGN_RIGHT, 7, DT_RIGHT);
-    PhAddTreeNewColumn(tn, PHIC_ATTACHED_START_KEY, FALSE, L"Attached start key", 140, PH_ALIGN_LEFT, 8, 0);
-    PhAddTreeNewColumn(tn, PHIC_CATEGORY, TRUE, L"Category", 60, PH_ALIGN_LEFT, 9, 0);
-    PhAddTreeNewColumn(tn, PHIC_EVENT, TRUE, L"Event", 100, PH_ALIGN_LEFT, 10, 0);
-    PhAddTreeNewColumn(tn, PHIC_PATH, TRUE, L"Path", 200, PH_ALIGN_LEFT, 11, DT_PATH_ELLIPSIS);
-    PhAddTreeNewColumn(tn, PHIC_RESULT, TRUE, L"Result", 60, PH_ALIGN_LEFT, 12, 0);
-    PhAddTreeNewColumn(tn, PHIC_DETAILS, TRUE, L"Details", 200, PH_ALIGN_LEFT, 13, 0);
+    PhAddTreeNewColumn(tn, PHIC_START_KEY, FALSE, PhTranslateUiText(L"Start key"), 140, PH_ALIGN_LEFT, 5, 0);
+    PhAddTreeNewColumn(tn, PHIC_ATTACHED_PROCESS, FALSE, PhTranslateUiText(L"Attached process"), 120, PH_ALIGN_LEFT, 6, 0);
+    PhAddTreeNewColumn(tn, PHIC_ATTACHED_PID, FALSE, PhTranslateUiText(L"Attached PID"), 60, PH_ALIGN_RIGHT, 7, DT_RIGHT);
+    PhAddTreeNewColumn(tn, PHIC_ATTACHED_START_KEY, FALSE, PhTranslateUiText(L"Attached start key"), 140, PH_ALIGN_LEFT, 8, 0);
+    PhAddTreeNewColumn(tn, PHIC_CATEGORY, TRUE, PhTranslateUiText(L"Category"), 60, PH_ALIGN_LEFT, 9, 0);
+    PhAddTreeNewColumn(tn, PHIC_EVENT, TRUE, PhTranslateUiText(L"Event"), 100, PH_ALIGN_LEFT, 10, 0);
+    PhAddTreeNewColumn(tn, PHIC_PATH, TRUE, PhTranslateUiText(L"Path"), 200, PH_ALIGN_LEFT, 11, DT_PATH_ELLIPSIS);
+    PhAddTreeNewColumn(tn, PHIC_RESULT, TRUE, PhTranslateUiText(L"Result"), 60, PH_ALIGN_LEFT, 12, 0);
+    PhAddTreeNewColumn(tn, PHIC_DETAILS, TRUE, PhTranslateUiText(L"Details"), 200, PH_ALIGN_LEFT, 13, 0);
 
     PhCmInitializeManager(&Context->Cm, tn, PHIC_MAXIMUM, PhpInformerPostSortFunction);
 

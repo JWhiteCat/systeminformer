@@ -393,7 +393,7 @@ NTSTATUS PhpShowHandlePropertiesThread(
     propSheetPage.hInstance = NtCurrentImageBase();
     propSheetPage.pfnDlgProc = PhpHandleGeneralDlgProc;
     propSheetPage.lParam = (LPARAM)context;
-    pages[propSheetHeader.nPages++] = CreatePropertySheetPage(&propSheetPage);
+    pages[propSheetHeader.nPages++] = PhCreatePropertySheetPage(&propSheetPage);
 
     // Permissions page
     memset(&propSheetPage, 0, sizeof(PROPSHEETPAGE));
@@ -402,7 +402,7 @@ NTSTATUS PhpShowHandlePropertiesThread(
     propSheetPage.hInstance = NtCurrentImageBase();
     propSheetPage.pfnDlgProc = PhpHandlePermissionsDlgProc;
     propSheetPage.lParam = (LPARAM)context;
-    pages[propSheetHeader.nPages++] = CreatePropertySheetPage(&propSheetPage);
+    pages[propSheetHeader.nPages++] = PhCreatePropertySheetPage(&propSheetPage);
 
     // Audiing page
     memset(&propSheetPage, 0, sizeof(PROPSHEETPAGE));
@@ -411,7 +411,7 @@ NTSTATUS PhpShowHandlePropertiesThread(
     propSheetPage.hInstance = NtCurrentImageBase();
     propSheetPage.pfnDlgProc = PhpHandleAuditingDlgProc;
     propSheetPage.lParam = (LPARAM)context;
-    pages[propSheetHeader.nPages++] = CreatePropertySheetPage(&propSheetPage);
+    pages[propSheetHeader.nPages++] = PhCreatePropertySheetPage(&propSheetPage);
 
     // Object-specific page
     if (PhIsNullOrEmptyString(handleContext->HandleItem->TypeName))
@@ -2228,8 +2228,8 @@ INT_PTR CALLBACK PhpHandleGeneralDlgProc(
 
             PhSetListViewStyle(context->ListViewHandle, FALSE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, L"Name");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 250, L"Value");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 250, PhTranslateUiText(L"Value"));
             PhSetExtendedListView(context->ListViewHandle);
 
             PhInitializeLayoutManager(&context->LayoutManager, hwndDlg);
@@ -2323,7 +2323,7 @@ INT_PTR CALLBACK PhpHandleGeneralDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(
@@ -2954,12 +2954,12 @@ VOID PhUpdateHandlePermissionSecurity(
 
     PhSetListViewStyle(Context->ListViewHeader, FALSE, TRUE);
     PhSetControlTheme(Context->ListViewHeader, L"explorer");
-    PhAddListViewColumn(Context->ListViewHeader, 0, 0, 0, LVCFMT_LEFT, 120, L"Name");
-    PhAddListViewColumn(Context->ListViewHeader, 1, 1, 1, LVCFMT_LEFT, 250, L"Value");
+    PhAddListViewColumn(Context->ListViewHeader, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Name"));
+    PhAddListViewColumn(Context->ListViewHeader, 1, 1, 1, LVCFMT_LEFT, 250, PhTranslateUiText(L"Value"));
     PhSetExtendedListView(Context->ListViewHeader);
 
     ListView_EnableGroupView(Context->ListViewHeader, TRUE);
-    PhAddListViewGroup(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, L"Security information");
+    PhAddListViewGroup(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, PhTranslateUiText(L"Security information"));
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 0, L"Owner", NULL);
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 1, L"Group", NULL);
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 2, L"Integrity", NULL);
@@ -3046,12 +3046,12 @@ VOID PhUpdateHandleAuditingSecurity(
 
     PhSetListViewStyle(Context->ListViewHeader, FALSE, TRUE);
     PhSetControlTheme(Context->ListViewHeader, L"explorer");
-    PhAddListViewColumn(Context->ListViewHeader, 0, 0, 0, LVCFMT_LEFT, 120, L"Name");
-    PhAddListViewColumn(Context->ListViewHeader, 1, 1, 1, LVCFMT_LEFT, 250, L"Value");
+    PhAddListViewColumn(Context->ListViewHeader, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Name"));
+    PhAddListViewColumn(Context->ListViewHeader, 1, 1, 1, LVCFMT_LEFT, 250, PhTranslateUiText(L"Value"));
     PhSetExtendedListView(Context->ListViewHeader);
 
     ListView_EnableGroupView(Context->ListViewHeader, TRUE);
-    PhAddListViewGroup(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, L"Auditing information");
+    PhAddListViewGroup(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, PhTranslateUiText(L"Auditing information"));
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 0, L"Owner", NULL);
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 1, L"Group", NULL);
     PhAddListViewGroupItem(Context->ListViewHeader, PH_HANDLE_GENERAL_CATEGORY_SECURITY, 2, L"Integrity", NULL);
@@ -3168,10 +3168,10 @@ INT_PTR CALLBACK PhpHandlePermissionsDlgProc(
 
             PhSetListViewStyle(context->ListViewHandle, FALSE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 140, L"Principal");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 50, L"Type");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 80, L"Access");
-            //PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 80, L"Inherited from");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 140, PhTranslateUiText(L"Principal"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 50, PhTranslateUiText(L"Type"));
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 80, PhTranslateUiText(L"Access"));
+            //PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 80, PhTranslateUiText(L"Inherited from"));
             PhSetExtendedListView(context->ListViewHandle);
 
             PhInitializeLayoutManager(&context->LayoutManager, hwndDlg);
@@ -3265,7 +3265,7 @@ INT_PTR CALLBACK PhpHandlePermissionsDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(
@@ -3360,11 +3360,11 @@ INT_PTR CALLBACK PhpHandleAuditingDlgProc(
 
             PhSetListViewStyle(context->ListViewHandle, FALSE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 140, L"Principal");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 50, L"Type");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 80, L"Access");
-            //PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 80, L"Inherited from");
-            //PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 80, L"Source");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 140, PhTranslateUiText(L"Principal"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 50, PhTranslateUiText(L"Type"));
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 80, PhTranslateUiText(L"Access"));
+            //PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 80, PhTranslateUiText(L"Inherited from"));
+            //PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 80, PhTranslateUiText(L"Source"));
             PhSetExtendedListView(context->ListViewHandle);
 
             PhInitializeLayoutManager(&context->LayoutManager, hwndDlg);
@@ -3451,7 +3451,7 @@ INT_PTR CALLBACK PhpHandleAuditingDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

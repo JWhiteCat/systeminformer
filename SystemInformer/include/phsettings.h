@@ -224,6 +224,7 @@ EXT ULONG PhCsProcessMonitorCacheLimit;
 
 // begin_phapppub
 
+#define SETTING_UI_LANGUAGE                                         L"UiLanguage"
 #define SETTING_SCHEMA_FILE                                         L"$schema"
 #define SETTING_ALLOW_ONLY_ONE_INSTANCE                             L"AllowOnlyOneInstance"
 #define SETTING_CLOSE_ON_ESCAPE                                     L"CloseOnEscape"

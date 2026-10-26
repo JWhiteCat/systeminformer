@@ -18,6 +18,32 @@
 
 EXTERN_C_START
 
+// Application UI language. These values are persisted; do not renumber them.
+#define PH_UI_LANGUAGE_ENGLISH 0
+#define PH_UI_LANGUAGE_CHINESE_SIMPLIFIED 1
+
+PHLIBAPI
+VOID
+NTAPI
+PhSetUiLanguage(
+    _In_ ULONG Language
+    );
+
+PHLIBAPI
+ULONG
+NTAPI
+PhGetUiLanguage(
+    VOID
+    );
+
+// Returns borrowed, immutable text, or the original pointer when untranslated.
+PHLIBAPI
+PCWSTR
+NTAPI
+PhTranslateUiText(
+    _In_opt_ PCWSTR English
+    );
+
 extern CONST WCHAR *PhSizeUnitNames[7];
 extern ULONG PhMaxSizeUnit;
 extern USHORT PhMaxPrecisionUnit;

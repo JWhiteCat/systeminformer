@@ -941,7 +941,36 @@ NTSTATUS PhLoadResource(
 
     __try
     {
-        status = LdrFindResource_U(DllBase, resourcePath, RTL_NUMBER_OF(resourcePath), &resourceData);
+        // Select translated UI resources explicitly rather than relying on the
+        // host OS locale. Exact matching ensures that English remains recoverable
+        // even on a Chinese Windows installation. Keep non-UI resources unchanged.
+        if (Type == RT_DIALOG || Type == RT_MENU || Type == RT_STRING)
+        {
+            resourcePath[2] = PhGetUiLanguage() == PH_UI_LANGUAGE_CHINESE_SIMPLIFIED
+                ? MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED)
+                : MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+            status = LdrFindResourceEx_U(LDR_RES_SEARCH_SKIP_MUI, DllBase,
+                resourcePath, RTL_NUMBER_OF(resourcePath), &resourceData);
+
+            if (!NT_SUCCESS(status) && resourcePath[2] != MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US))
+            {
+                resourcePath[2] = MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US);
+                status = LdrFindResourceEx_U(LDR_RES_SEARCH_SKIP_MUI, DllBase,
+                    resourcePath, RTL_NUMBER_OF(resourcePath), &resourceData);
+            }
+
+            // Modules outside the application can have only neutral or other
+            // language resources. Retain their existing loader fallback behavior.
+            if (!NT_SUCCESS(status))
+            {
+                resourcePath[2] = MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL);
+                status = LdrFindResource_U(DllBase, resourcePath, RTL_NUMBER_OF(resourcePath), &resourceData);
+            }
+        }
+        else
+        {
+            status = LdrFindResource_U(DllBase, resourcePath, RTL_NUMBER_OF(resourcePath), &resourceData);
+        }
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {

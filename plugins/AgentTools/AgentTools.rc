@@ -125,3 +125,9 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
+
+// Simplified Chinese UI resources; generated from the English resources above.
+#ifndef APSTUDIO_INVOKED
+#include "AgentTools.zh-CN.rc"
+#endif

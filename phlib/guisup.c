@@ -2860,6 +2860,40 @@ INT_PTR PhDialogBox(
 }
 
 /**
+ * Creates a property page using the application's selected resource language.
+ * The template remains backed by the loaded module, just like a named resource.
+ * Already-indirect templates are left unchanged. The caller's page is not mutated.
+ */
+HPROPSHEETPAGE PhCreatePropertySheetPage(
+    _In_ LPCPROPSHEETPAGE PropSheetPage
+    )
+{
+    PROPSHEETPAGE page;
+    PVOID dialogTemplate;
+
+    if (PropSheetPage->dwFlags & PSP_DLGINDIRECT)
+        return CreatePropertySheetPage(PropSheetPage);
+
+    // Property pages have versioned sizes. Never read past an older caller's
+    // structure, or truncate a future structure that this build cannot copy.
+    if (PropSheetPage->dwSize < PROPSHEETPAGE_V1_SIZE || PropSheetPage->dwSize > sizeof(page))
+        return NULL;
+
+    if (!NT_SUCCESS(PhLoadResource(PropSheetPage->hInstance,
+        PropSheetPage->pszTemplate, RT_DIALOG, NULL, &dialogTemplate)))
+    {
+        return NULL;
+    }
+
+    memset(&page, 0, sizeof(page));
+    memcpy(&page, PropSheetPage, PropSheetPage->dwSize);
+    page.dwFlags |= PSP_DLGINDIRECT;
+    page.pResource = (LPCDLGTEMPLATE)dialogTemplate;
+
+    return CreatePropertySheetPage(&page);
+}
+
+/**
  * Loads a menu resource by name from a module.
  *
  * \param DllBase Module base (mapped image or HMODULE) containing the menu resource.

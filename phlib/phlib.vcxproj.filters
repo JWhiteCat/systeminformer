@@ -140,6 +140,9 @@
     <ClCompile Include="lsasup.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="uilang.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -434,6 +437,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\phcrypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uilang_zh_cn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\phutil.h">

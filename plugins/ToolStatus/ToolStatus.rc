@@ -246,3 +246,9 @@ IDI_LIGHTBULB_OFF       ICON                    "resources\\lightbulb_off.ico"
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
+
+
+// Simplified Chinese UI resources; generated from the English resources above.
+#ifndef APSTUDIO_INVOKED
+#include "ToolStatus.zh-CN.rc"
+#endif

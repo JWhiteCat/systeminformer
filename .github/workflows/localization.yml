@@ -1,0 +1,28 @@
+name: localization-validation
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Check generated bilingual resources and catalog
+        run: |
+          python3 localization/generate_resources.py --check
+          python3 tools/localization/generate_dynamic.py --check
+      - name: Check resource invariants and settings control flow
+        run: |
+          python3 -m unittest discover -s tests -p 'test_ui_*.py' -v
+          python3 -m unittest discover -s localization -p test_resources.py -v
+          python3 tools/localization/test_dynamic.py
+      - name: Test actual localization C code with portable platform shims
+        run: python3 tools/localization/test_core.py

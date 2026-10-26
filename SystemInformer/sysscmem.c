@@ -1395,17 +1395,17 @@ VOID PhSipUpdateMemoryPanel(
             if (PhFindStringSiKeyValuePairs(MemoryFormFactors, sizeof(MemoryFormFactors), MemoryFormFactor, &string))
                 PhSetDialogItemText(MemoryPanel, IDC_ZMEMFORMFACTOR_V, string);
             else
-                PhSetDialogItemText(MemoryPanel, IDC_ZMEMFORMFACTOR_V, L"Undefined");
+                PhSetDialogItemText(MemoryPanel, IDC_ZMEMFORMFACTOR_V, PhTranslateUiText(L"Undefined"));
 
             if (PhFindStringSiKeyValuePairs(MemoryTypes, sizeof(MemoryTypes), MemoryType, &string))
                 PhSetDialogItemText(MemoryPanel, IDC_ZMEMTYPE_V, string);
             else
-                PhSetDialogItemText(MemoryPanel, IDC_ZMEMTYPE_V, L"Undefined");
+                PhSetDialogItemText(MemoryPanel, IDC_ZMEMTYPE_V, PhTranslateUiText(L"Undefined"));
 
             if (PhFindStringSiKeyValuePairs(MemoryTechnologies, sizeof(MemoryTechnologies), MemoryTechnology, &string))
                 PhSetDialogItemText(MemoryPanel, IDC_ZMEMTECHNOLOGY_V, string);
             else
-                PhSetDialogItemText(MemoryPanel, IDC_ZMEMTECHNOLOGY_V, L"Undefined");
+                PhSetDialogItemText(MemoryPanel, IDC_ZMEMTECHNOLOGY_V, PhTranslateUiText(L"Undefined"));
 
             PhInitFormatU(&format[0], MemorySpeed);
             PhInitFormatS(&format[1], L" MT/s");

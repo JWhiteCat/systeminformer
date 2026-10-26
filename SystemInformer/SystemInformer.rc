@@ -748,6 +748,7 @@ BEGIN
     PUSHBUTTON      "Font...",IDC_FONT,179,70,49,14
     PUSHBUTTON      "Monospace...",IDC_FONTMONOSPACE,230,70,70,14
     PUSHBUTTON      "Make default...",IDC_REPLACETASKMANAGER,179,86,72,14
+    PUSHBUTTON      "Language...",IDC_LANGUAGE,253,86,55,14
     LTEXT           "Graph history length:",IDC_STATIC,106,56,69,8
     EDITTEXT        IDC_SAMPLECOUNT,180,55,48,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Automatic",IDC_SAMPLECOUNTAUTOMATIC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,233,56,48,10
@@ -756,6 +757,18 @@ BEGIN
     RTEXT           "System Informer is the default Task Manager:",IDC_DEFSTATE,7,88,166,8
     LTEXT           "Symbol path:",IDC_STATIC,7,39,43,8
     EDITTEXT        IDC_DBGHELPSEARCHPATH,61,38,247,12,ES_AUTOHSCROLL
+END
+
+IDD_OPTLANGUAGE DIALOGEX 0, 0, 260, 100
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Language"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Display language:",IDC_STATIC,7,10,80,8
+    COMBOBOX        IDC_UILANGUAGE,95,7,158,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "The language change takes effect after restarting System Informer.",IDC_STATIC,7,33,246,25
+    DEFPUSHBUTTON   "OK",IDOK,149,79,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,203,79,50,14
 END
 
 IDD_OPTHIGHLIGHTING DIALOGEX 0, 0, 250, 174
@@ -2686,3 +2699,9 @@ END
 /////////////////////////////////////////////////////////////////////////////
 
 
+
+
+// Simplified Chinese UI resources; generated from the English resources above.
+#ifndef APSTUDIO_INVOKED
+#include "SystemInformer.zh-CN.rc"
+#endif

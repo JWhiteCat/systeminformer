@@ -423,7 +423,7 @@ VOID SearchBoxCreate(
     PhCreateSearchControl(
         MainWindowHandle,
         SearchboxHandle,
-        L"Search Processes (Ctrl+K)",
+        PhTranslateUiText(L"Search Processes (Ctrl+K)"),
         SearchControlCallback,
         NULL
         );
@@ -1111,27 +1111,27 @@ PCWSTR ToolbarGetText(
     switch (CommandID)
     {
     case PHAPP_ID_VIEW_REFRESH:
-        return L"Refresh";
+        return PhTranslateUiText(L"Refresh");
     case PHAPP_ID_HACKER_OPTIONS:
-        return L"Options";
+        return PhTranslateUiText(L"Options");
     case PHAPP_ID_HACKER_FINDHANDLESORDLLS:
-        return L"Find handles or DLLs";
+        return PhTranslateUiText(L"Find handles or DLLs");
     case PHAPP_ID_VIEW_SYSTEMINFORMATION:
-        return L"System information";
+        return PhTranslateUiText(L"System information");
     case TIDC_FINDWINDOW:
-        return L"Find window";
+        return PhTranslateUiText(L"Find window");
     case TIDC_FINDWINDOWTHREAD:
-        return L"Find window and thread";
+        return PhTranslateUiText(L"Find window and thread");
     case TIDC_FINDWINDOWKILL:
-        return L"Find window and kill";
+        return PhTranslateUiText(L"Find window and kill");
     case PHAPP_ID_VIEW_ALWAYSONTOP:
-        return L"Always on top";
+        return PhTranslateUiText(L"Always on top");
     case TIDC_POWERMENUDROPDOWN:
-        return L"Computer";
+        return PhTranslateUiText(L"Computer");
     case PHAPP_ID_HACKER_SHOWDETAILSFORALLPROCESSES:
-        return L"Show details for all processes";
+        return PhTranslateUiText(L"Show details for all processes");
     case TIDC_FINDDIALOG:
-        return L"Find";
+        return PhTranslateUiText(L"Find");
     }
 
     return L"ERROR";

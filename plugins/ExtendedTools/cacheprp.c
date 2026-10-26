@@ -3193,7 +3193,7 @@ INT_PTR CALLBACK EtCacheLatencyDlgProc(
                     PhPrintUInt32(context->RowData[row].SizeText, 1u << row);
                 }
 
-                PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 135, L"size (KB) [cycles]");
+                PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 135, PhTranslateUiText(L"size (KB) [cycles]"));
 
                 for (column = 0; column < strideCount; column++)
                 {
@@ -3426,8 +3426,8 @@ INT_PTR CALLBACK EtCacheLatencyDlgProc(
                     GetCursorPos(&point);
 
                 menu = PhCreateEMenu();
-                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ET_CACHE_LATENCY_MENU_COLUMNS_1, L"&One graph per row", NULL, NULL), ULONG_MAX);
-                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ET_CACHE_LATENCY_MENU_COLUMNS_2, L"&Two graphs per row", NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ET_CACHE_LATENCY_MENU_COLUMNS_1, PhTranslateUiText(L"&One graph per row"), NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ET_CACHE_LATENCY_MENU_COLUMNS_2, PhTranslateUiText(L"&Two graphs per row"), NULL, NULL), ULONG_MAX);
                 PhSetFlagsEMenuItem(
                     menu,
                     context->GraphColumns == 1 ? ET_CACHE_LATENCY_MENU_COLUMNS_1 : ET_CACHE_LATENCY_MENU_COLUMNS_2,

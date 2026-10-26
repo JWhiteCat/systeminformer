@@ -107,11 +107,11 @@ BOOLEAN PhMwpServicesPageCallback(
             PPH_EMENU menu;
             PPH_EMENU_ITEM menuItem;
 
-            menu = PhCreateEMenuItem(0, 0, L"Services", NULL, NULL);
+            menu = PhCreateEMenuItem(0, 0, PhTranslateUiText(L"Services"), NULL, NULL);
             PhInsertEMenuItem(menuInfo->Menu, menu, menuInfo->StartIndex);
 
-            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_VIEW_HIDEMICROSOFTSERVICES, L"Hide default services", NULL, NULL), ULONG_MAX);
-            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_VIEW_HIDEDRIVERSERVICES, L"&Hide driver services", NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_VIEW_HIDEMICROSOFTSERVICES, PhTranslateUiText(L"Hide default services"), NULL, NULL), ULONG_MAX);
+            PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_VIEW_HIDEDRIVERSERVICES, PhTranslateUiText(L"&Hide driver services"), NULL, NULL), ULONG_MAX);
 
             if (DriverFilterEntry && (menuItem = PhFindEMenuItem(menu, 0, NULL, ID_VIEW_HIDEDRIVERSERVICES)))
                 menuItem->Flags |= PH_EMENU_CHECKED;
@@ -122,15 +122,15 @@ BOOLEAN PhMwpServicesPageCallback(
                 PPH_EMENU groupMenu;
                 ULONG groupMode = PhGetServiceTreeListGroupMode();
 
-                groupMenu = PhCreateEMenuItem(0, 0, L"&Group services by", NULL, NULL);
+                groupMenu = PhCreateEMenuItem(0, 0, PhTranslateUiText(L"&Group services by"), NULL, NULL);
                 PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
                 PhInsertEMenuItem(menu, groupMenu, ULONG_MAX);
 
-                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_NONE, L"&None", NULL, NULL), ULONG_MAX);
-                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_TYPE, L"&Type", NULL, NULL), ULONG_MAX);
-                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_LOADORDER, L"&Load order group", NULL, NULL), ULONG_MAX);
-                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_SVCHOST, L"&Svchost group", NULL, NULL), ULONG_MAX);
-                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_STARTTYPE, L"Start t&ype", NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_NONE, PhTranslateUiText(L"&None"), NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_TYPE, PhTranslateUiText(L"&Type"), NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_LOADORDER, PhTranslateUiText(L"&Load order group"), NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_SVCHOST, PhTranslateUiText(L"&Svchost group"), NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(groupMenu, PhCreateEMenuItem(0, ID_SERVICE_GROUP_STARTTYPE, PhTranslateUiText(L"Start t&ype"), NULL, NULL), ULONG_MAX);
 
                 switch (groupMode)
                 {
@@ -401,19 +401,19 @@ VOID PhShowServiceContextMenu(
         PPH_EMENU_ITEM item;
 
         menu = PhCreateEMenu();
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_START, L"&Start", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_CONTINUE, L"C&ontinue", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_PAUSE, L"&Pause", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_STOP, L"S&top", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_DELETE, L"&Delete\bDel", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_START, PhTranslateUiText(L"&Start"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_CONTINUE, PhTranslateUiText(L"C&ontinue"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_PAUSE, PhTranslateUiText(L"&Pause"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_STOP, PhTranslateUiText(L"S&top"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_DELETE, PhTranslateUiText(L"&Delete\bDel"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_GOTOPROCESS, L"&Go to process", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_GOTOPROCESS, PhTranslateUiText(L"&Go to process"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_OPENKEY, L"Open &key", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_OPENFILELOCATION, L"Open &file location\bCtrl+Enter", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_PROPERTIES, L"P&roperties\bEnter", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_OPENKEY, PhTranslateUiText(L"Open &key"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_OPENFILELOCATION, PhTranslateUiText(L"Open &file location\bCtrl+Enter"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_PROPERTIES, PhTranslateUiText(L"P&roperties\bEnter"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_COPY, L"&Copy\bCtrl+C", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_SERVICE_COPY, PhTranslateUiText(L"&Copy\bCtrl+C"), NULL, NULL), ULONG_MAX);
         PhSetFlagsEMenuItem(menu, ID_SERVICE_PROPERTIES, PH_EMENU_DEFAULT, PH_EMENU_DEFAULT);
         PhMwpInitializeServiceMenu(menu, services, numberOfServices);
         PhInsertCopyCellEMenuItem(menu, ID_SERVICE_COPY, PhMwpServiceTreeNewHandle, ContextMenu->Column);
@@ -472,19 +472,19 @@ VOID PhServiceListInsertContextMenu(
 {
     PH_PLUGIN_MENU_INFORMATION menuInfo;
 
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_START, L"&Start", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_CONTINUE, L"C&ontinue", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_PAUSE, L"&Pause", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_STOP, L"S&top", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_DELETE, L"&Delete\bDel", NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_START, PhTranslateUiText(L"&Start"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_CONTINUE, PhTranslateUiText(L"C&ontinue"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_PAUSE, PhTranslateUiText(L"&Pause"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_STOP, PhTranslateUiText(L"S&top"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_DELETE, PhTranslateUiText(L"&Delete\bDel"), NULL, NULL), ULONG_MAX);
     PhInsertEMenuItem(Menu, PhCreateEMenuSeparator(), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_GOTOPROCESS, L"&Go to process", NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_GOTOPROCESS, PhTranslateUiText(L"&Go to process"), NULL, NULL), ULONG_MAX);
     PhInsertEMenuItem(Menu, PhCreateEMenuSeparator(), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_OPENKEY, L"Open &key", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_OPENFILELOCATION, L"Open &file location\bCtrl+Enter", NULL, NULL), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_PROPERTIES, L"P&roperties\bEnter", NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_OPENKEY, PhTranslateUiText(L"Open &key"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_OPENFILELOCATION, PhTranslateUiText(L"Open &file location\bCtrl+Enter"), NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_PROPERTIES, PhTranslateUiText(L"P&roperties\bEnter"), NULL, NULL), ULONG_MAX);
     PhInsertEMenuItem(Menu, PhCreateEMenuSeparator(), ULONG_MAX);
-    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_COPY, L"&Copy\bCtrl+C", NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(Menu, PhCreateEMenuItem(0, ID_SERVICE_COPY, PhTranslateUiText(L"&Copy\bCtrl+C"), NULL, NULL), ULONG_MAX);
     PhSetFlagsEMenuItem(Menu, ID_SERVICE_PROPERTIES, PH_EMENU_DEFAULT, PH_EMENU_DEFAULT);
     PhMwpInitializeServiceMenu(Menu, Services, NumberOfServices);
 

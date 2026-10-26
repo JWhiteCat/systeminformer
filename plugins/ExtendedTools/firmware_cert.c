@@ -807,8 +807,8 @@ INT_PTR CALLBACK EtFwCertGeneralDlgProc(
         listViewHandle = GetDlgItem(WindowHandle, IDC_FWCERT_PROP_LIST);
         PhSetListViewStyle(listViewHandle, TRUE, TRUE);
         PhSetControlTheme(listViewHandle, L"explorer");
-        PhAddListViewColumn(listViewHandle, 0, 0, 0, LVCFMT_LEFT, 110, L"Property");
-        PhAddListViewColumn(listViewHandle, 1, 1, 1, LVCFMT_LEFT, 185, L"Value");
+        PhAddListViewColumn(listViewHandle, 0, 0, 0, LVCFMT_LEFT, 110, PhTranslateUiText(L"Property"));
+        PhAddListViewColumn(listViewHandle, 1, 1, 1, LVCFMT_LEFT, 185, PhTranslateUiText(L"Value"));
         PhSetExtendedListView(listViewHandle);
 
         typeName = EtFwCertSignatureTypeToString(&entry->SignatureType);
@@ -910,8 +910,8 @@ VOID EtFwCertShowEntryProperties(
     pages[1].pszTemplate = MAKEINTRESOURCE(IDD_FWCERT_RAW);
     pages[1].pfnDlgProc = EtFwCertRawDlgProc;
 
-    handles[0] = CreatePropertySheetPage(&pages[0]);
-    handles[1] = CreatePropertySheetPage(&pages[1]);
+    handles[0] = PhCreatePropertySheetPage(&pages[0]);
+    handles[1] = PhCreatePropertySheetPage(&pages[1]);
 
     header.dwFlags = PSH_PROPTITLE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP;
     header.hwndParent = ParentWindowHandle;
@@ -959,14 +959,14 @@ INT_PTR CALLBACK EtFirmwareCertDlgProc(
 
             PhSetListViewStyle(context->ListViewHandle, TRUE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 280, L"Subject");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 240, L"Issuer");
-            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 90, L"Type");
-            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 240, L"Owner");
-            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 120, L"Valid from");
-            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 120, L"Valid to");
-            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 240, L"Thumbprint");
-            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 60, L"Size");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 280, PhTranslateUiText(L"Subject"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 240, PhTranslateUiText(L"Issuer"));
+            PhAddListViewColumn(context->ListViewHandle, 2, 2, 2, LVCFMT_LEFT, 90, PhTranslateUiText(L"Type"));
+            PhAddListViewColumn(context->ListViewHandle, 3, 3, 3, LVCFMT_LEFT, 240, PhTranslateUiText(L"Owner"));
+            PhAddListViewColumn(context->ListViewHandle, 4, 4, 4, LVCFMT_LEFT, 120, PhTranslateUiText(L"Valid from"));
+            PhAddListViewColumn(context->ListViewHandle, 5, 5, 5, LVCFMT_LEFT, 120, PhTranslateUiText(L"Valid to"));
+            PhAddListViewColumn(context->ListViewHandle, 6, 6, 6, LVCFMT_LEFT, 240, PhTranslateUiText(L"Thumbprint"));
+            PhAddListViewColumn(context->ListViewHandle, 7, 7, 7, LVCFMT_LEFT, 60, PhTranslateUiText(L"Size"));
             PhSetExtendedListView(context->ListViewHandle);
             ListView_EnableGroupView(context->ListViewHandle, TRUE);
 
@@ -1068,9 +1068,9 @@ INT_PTR CALLBACK EtFirmwareCertDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, L"&Properties", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, 1, PhTranslateUiText(L"&Properties"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PHAPP_IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PHAPP_IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, PHAPP_IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

@@ -159,15 +159,15 @@ VOID PhShowHandleContextMenu(
         PH_PLUGIN_MENU_INFORMATION menuInfo;
 
         menu = PhCreateEMenu();
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_CLOSE, L"C&lose\bDel", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_PROTECTED, L"&Protected", NULL, NULL), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_INHERIT, L"&Inherit", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_CLOSE, PhTranslateUiText(L"C&lose\bDel"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_PROTECTED, PhTranslateUiText(L"&Protected"), NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_INHERIT, PhTranslateUiText(L"&Inherit"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_SECURITY, L"Secu&rity", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_SECURITY, PhTranslateUiText(L"Secu&rity"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_PROPERTIES, L"Prope&rties\bEnter", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_PROPERTIES, PhTranslateUiText(L"Prope&rties\bEnter"), NULL, NULL), ULONG_MAX);
         PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_COPY, L"&Copy\bCtrl+C", NULL, NULL), ULONG_MAX);
+        PhInsertEMenuItem(menu, PhCreateEMenuItem(0, ID_HANDLE_COPY, PhTranslateUiText(L"&Copy\bCtrl+C"), NULL, NULL), ULONG_MAX);
         PhSetFlagsEMenuItem(menu, ID_HANDLE_PROPERTIES, PH_EMENU_DEFAULT, PH_EMENU_DEFAULT);
         PhpInitializeHandleMenu(menu, ProcessItem->ProcessId, handles, numberOfHandles, Context);
         PhInsertCopyCellEMenuItem(menu, ID_HANDLE_COPY, Context->ListContext.TreeNewHandle, ContextMenu->Column);
@@ -803,17 +803,17 @@ INT_PTR CALLBACK PhpProcessHandlesDlgProc(
                         break;
 
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, protectedMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_PROTECTED_HANDLES, L"Hide protected handles", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, inheritMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_INHERIT_HANDLES, L"Hide inherit handles", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, unnamedMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_UNNAMED_HANDLES, L"Hide unnamed handles", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, etwMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_ETW_HANDLES, L"Hide etw handles", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, protectedMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_PROTECTED_HANDLES, PhTranslateUiText(L"Hide protected handles"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, inheritMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_INHERIT_HANDLES, PhTranslateUiText(L"Hide inherit handles"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, unnamedMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_UNNAMED_HANDLES, PhTranslateUiText(L"Hide unnamed handles"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, etwMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIDE_ETW_HANDLES, PhTranslateUiText(L"Hide etw handles"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                    PhInsertEMenuItem(menu, enableHandleSnapshotMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_ENABLE_HANDLE_SNAPSHOT, L"Handle snapshots", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, enableHandleSnapshotMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_ENABLE_HANDLE_SNAPSHOT, PhTranslateUiText(L"Handle snapshots"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                    PhInsertEMenuItem(menu, protectedHighlightMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIGHLIGHT_PROTECTED_HANDLES, L"Highlight protected handles", NULL, NULL), ULONG_MAX);
-                    PhInsertEMenuItem(menu, inheritHighlightMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIGHLIGHT_INHERIT_HANDLES, L"Highlight inherit handles", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, protectedHighlightMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIGHLIGHT_PROTECTED_HANDLES, PhTranslateUiText(L"Highlight protected handles"), NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, inheritHighlightMenuItem = PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HIGHLIGHT_INHERIT_HANDLES, PhTranslateUiText(L"Highlight inherit handles"), NULL, NULL), ULONG_MAX);
                     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HANDLESTATS, L"Statistics", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, PH_HANDLE_TREE_MENUITEM_HANDLESTATS, PhTranslateUiText(L"Statistics"), NULL, NULL), ULONG_MAX);
 
                     if (handlesContext->ListContext.HideProtectedHandles)
                         protectedMenuItem->Flags |= PH_EMENU_CHECKED;

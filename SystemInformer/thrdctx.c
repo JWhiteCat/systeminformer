@@ -233,15 +233,15 @@ VOID PhAddNativeContextItems(
 
     ListView_EnableGroupView(lvHandle, TRUE);
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, L"General purpose");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, PhTranslateUiText(L"General purpose"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, L"Control and flags");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, PhTranslateUiText(L"Control and flags"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_SEGMENTS, L"Segments");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_SEGMENTS, PhTranslateUiText(L"Segments"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_DEBUG, L"Debug registers");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_DEBUG, PhTranslateUiText(L"Debug registers"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_X87, L"x87 floating point");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_X87, PhTranslateUiText(L"x87 floating point"));
     if (Context->ValueColumn == 1)
         PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_XMM, L"SSE (XMM)");
 
@@ -424,7 +424,7 @@ VOID PhAddNativeCetContextItems(
     PPH_STRING string;
 
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(Context->ListViewHandle, PH_CONTEXT_GROUP_CET, L"CET shadow stack");
+        PhAddListViewGroup(Context->ListViewHandle, PH_CONTEXT_GROUP_CET, PhTranslateUiText(L"CET shadow stack"));
 
     PhThreadFrameContextAddItem(Context, PH_CONTEXT_GROUP_CET, L"Ssp", PhaFormatString(L"0x%016I64x", CetUserState->Ia32Pl3SspMsr)->Buffer);
 
@@ -444,15 +444,15 @@ VOID PhAddWow64ContextItems(
 
     ListView_EnableGroupView(lvHandle, TRUE);
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, L"General purpose (WOW64)");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, PhTranslateUiText(L"General purpose (WOW64)"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, L"Control and flags");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, PhTranslateUiText(L"Control and flags"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_SEGMENTS, L"Segments");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_SEGMENTS, PhTranslateUiText(L"Segments"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_DEBUG, L"Debug registers");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_DEBUG, PhTranslateUiText(L"Debug registers"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_X87, L"x87 floating point");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_X87, PhTranslateUiText(L"x87 floating point"));
     if (Context->ValueColumn == 1)
         PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_XMM, L"SSE (XMM)");
 
@@ -519,9 +519,9 @@ VOID PhAddNativeContextItems(
 
     ListView_EnableGroupView(lvHandle, TRUE);
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, L"General purpose");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_GENERAL, PhTranslateUiText(L"General purpose"));
     if (Context->ValueColumn == 1)
-        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, L"Control and flags");
+        PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_CONTROL, PhTranslateUiText(L"Control and flags"));
     if (Context->ValueColumn == 1)
         PhAddListViewGroup(lvHandle, PH_CONTEXT_GROUP_XMM, L"NEON (V)");
 
@@ -761,8 +761,8 @@ INT_PTR CALLBACK PhThreadContextDlgProc(
             context->ListViewHandle = GetDlgItem(hwndDlg, IDC_LIST);
             PhSetListViewStyle(context->ListViewHandle, FALSE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 100, L"Register");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 380, L"Value");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 100, PhTranslateUiText(L"Register"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 380, PhTranslateUiText(L"Value"));
             context->ValueColumn = 1;
 
             for (ULONG i = 0; i < context->PriorFrameCount; i++)
@@ -851,7 +851,7 @@ INT_PTR CALLBACK PhThreadContextDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

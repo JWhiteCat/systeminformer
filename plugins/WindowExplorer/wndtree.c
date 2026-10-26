@@ -127,12 +127,12 @@ VOID WeInitializeWindowTree(
     TreeNew_SetRedraw(TreeNewHandle, FALSE);
     TreeNew_SetCallback(TreeNewHandle, WepWindowTreeNewCallback, Context);
 
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_CLASS, TRUE, L"Class", 180, PH_ALIGN_LEFT, 0, 0);
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_HANDLE, TRUE, L"Handle", 70, PH_ALIGN_LEFT, 1, 0);
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_TEXT, TRUE, L"Text", 220, PH_ALIGN_LEFT, 2, 0);
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_PROCESS, TRUE, L"Process", 150, PH_ALIGN_LEFT, 3, 0);
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_THREAD, TRUE, L"Thread", 150, PH_ALIGN_LEFT, 4, 0);
-    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_MODULE, TRUE, L"Module", 150, PH_ALIGN_LEFT, 5, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_CLASS, TRUE, PhTranslateUiText(L"Class"), 180, PH_ALIGN_LEFT, 0, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_HANDLE, TRUE, PhTranslateUiText(L"Handle"), 70, PH_ALIGN_LEFT, 1, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_TEXT, TRUE, PhTranslateUiText(L"Text"), 220, PH_ALIGN_LEFT, 2, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_PROCESS, TRUE, PhTranslateUiText(L"Process"), 150, PH_ALIGN_LEFT, 3, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_THREAD, TRUE, PhTranslateUiText(L"Thread"), 150, PH_ALIGN_LEFT, 4, 0);
+    PhAddTreeNewColumn(TreeNewHandle, WEWNTLC_MODULE, TRUE, PhTranslateUiText(L"Module"), 150, PH_ALIGN_LEFT, 5, 0);
 
     PhInitializeTreeNewFilterSupport(&Context->FilterSupport, Context->TreeNewHandle, Context->NodeList);
     Context->TreeFilterEntry = PhAddTreeNewFilter(&Context->FilterSupport, WeWindowTreeFilterCallback, Context);

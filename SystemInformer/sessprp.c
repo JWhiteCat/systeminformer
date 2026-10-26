@@ -647,12 +647,12 @@ INT_PTR CALLBACK PhpSessionPropertiesDlgProc(
 
             PhSetListViewStyle(context->ListViewHandle, FALSE, TRUE);
             PhSetControlTheme(context->ListViewHandle, L"explorer");
-            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 150, L"Name");
-            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 250, L"Value");
+            PhAddListViewColumn(context->ListViewHandle, 0, 0, 0, LVCFMT_LEFT, 150, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(context->ListViewHandle, 1, 1, 1, LVCFMT_LEFT, 250, PhTranslateUiText(L"Value"));
             PhSetExtendedListView(context->ListViewHandle);
 
             ListView_EnableGroupView(context->ListViewHandle, TRUE);
-            PhAddListViewGroup(context->ListViewHandle, 0, L"User");
+            PhAddListViewGroup(context->ListViewHandle, 0, PhTranslateUiText(L"User"));
 
             PhAddListViewGroupItem(context->ListViewHandle, 0, 0, L"User name", NULL);
             PhAddListViewGroupItem(context->ListViewHandle, 0, 1, L"Session ID", NULL);
@@ -725,7 +725,7 @@ INT_PTR CALLBACK PhpSessionPropertiesDlgProc(
             if (list->Count != 0)
             {
                 ExtendedListView_SetRedraw(context->ListViewHandle, FALSE);
-                PhAddListViewGroup(context->ListViewHandle, 1, L"Account (nltest)");
+                PhAddListViewGroup(context->ListViewHandle, 1, PhTranslateUiText(L"Account (nltest)"));
 
                 for (ULONG i = 0; i + 1 < list->Count; i += 2)
                 {
@@ -793,7 +793,7 @@ INT_PTR CALLBACK PhpSessionPropertiesDlgProc(
                 if (PhGetSelectedListViewItemParams(context->ListViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, context->ListViewHandle);
 
                     item = PhShowEMenu(

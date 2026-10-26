@@ -308,8 +308,8 @@ PES_TRIGGER_CONTEXT EsCreateServiceTriggerContext(
 
     PhSetListViewStyle(TriggersLv, FALSE, TRUE);
     PhSetControlTheme(TriggersLv, L"explorer");
-    PhAddListViewColumn(TriggersLv, 0, 0, 0, LVCFMT_LEFT, 300, L"Trigger");
-    PhAddListViewColumn(TriggersLv, 1, 1, 1, LVCFMT_LEFT, 60, L"Action");
+    PhAddListViewColumn(TriggersLv, 0, 0, 0, LVCFMT_LEFT, 300, PhTranslateUiText(L"Trigger"));
+    PhAddListViewColumn(TriggersLv, 1, 1, 1, LVCFMT_LEFT, 60, PhTranslateUiText(L"Action"));
     PhSetExtendedListView(TriggersLv);
 
     EnableWindow(GetDlgItem(WindowHandle, IDC_EDIT), FALSE);
@@ -1233,7 +1233,7 @@ INT_PTR CALLBACK EspServiceTriggerDlgProc(
             lvHandle = GetDlgItem(WindowHandle, IDC_LIST);
             PhSetListViewStyle(lvHandle, FALSE, TRUE);
             PhSetControlTheme(lvHandle, L"explorer");
-            PhAddListViewColumn(lvHandle, 0, 0, 0, LVCFMT_LEFT, 280, L"Data");
+            PhAddListViewColumn(lvHandle, 0, 0, 0, LVCFMT_LEFT, 280, PhTranslateUiText(L"Data"));
 
             if (context->EditingInfo->DataList)
             {

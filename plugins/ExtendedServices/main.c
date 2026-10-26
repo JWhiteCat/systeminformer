@@ -149,7 +149,7 @@ VOID NTAPI ProcessMenuInitializingCallback(
         // * There are no extra submenus.
         if (serviceList->Count != 1)
         {
-            servicesMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, 0, L"Ser&vices", NULL);
+            servicesMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, 0, PhTranslateUiText(L"Ser&vices"), NULL);
         }
 
         // Create and add a menu item for each service.
@@ -180,11 +180,11 @@ VOID NTAPI ProcessMenuInitializingCallback(
                 servicesMenuItem = serviceMenuItem;
             }
 
-            PhInsertEMenuItem(serviceMenuItem, PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_GOTOSERVICE, L"&Go to service", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, startMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_START, L"Sta&rt", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, continueMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_CONTINUE, L"&Continue", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, pauseMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_PAUSE, L"&Pause", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, stopMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_STOP, L"St&op", serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_GOTOSERVICE, PhTranslateUiText(L"&Go to service"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, startMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_START, PhTranslateUiText(L"Sta&rt"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, continueMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_CONTINUE, PhTranslateUiText(L"&Continue"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, pauseMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_PAUSE, PhTranslateUiText(L"&Pause"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, stopMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_STOP, PhTranslateUiText(L"St&op"), serviceItem), ULONG_MAX);
 
             // Massive copy and paste from mainwnd.c.
             // == START ==
@@ -286,7 +286,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
             propSheetPage.pfnDlgProc = EspServiceRecovery2DlgProc;
         }
 
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // Dependencies
@@ -300,7 +300,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"Dependencies";
         propSheetPage.pfnDlgProc = EspServiceDependenciesDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // Dependents
@@ -314,7 +314,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"Dependents";
         propSheetPage.pfnDlgProc = EspServiceDependentsDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // Other
@@ -328,7 +328,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"Triggers";
         propSheetPage.pfnDlgProc = EspServiceTriggersDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // Package
@@ -342,7 +342,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"Package";
         propSheetPage.pfnDlgProc = EspPackageServiceDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // PnP
@@ -356,7 +356,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"PnP";
         propSheetPage.pfnDlgProc = EspPnPServiceDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 
     // Other
@@ -370,7 +370,7 @@ VOID NTAPI ServicePropertiesInitializingCallback(
         propSheetPage.pszTitle = L"Other";
         propSheetPage.pfnDlgProc = EspServiceOtherDlgProc;
         propSheetPage.lParam = (LPARAM)serviceItem;
-        objectProperties->Pages[objectProperties->NumberOfPages++] = CreatePropertySheetPage(&propSheetPage);
+        objectProperties->Pages[objectProperties->NumberOfPages++] = PhCreatePropertySheetPage(&propSheetPage);
     }
 }
 
@@ -400,7 +400,7 @@ VOID NTAPI ServiceMenuInitializingCallback(
 
         PhInsertEMenuItem(
             menuInfo->Menu,
-            PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_RESTART, L"R&estart", menuInfo->u.Service.Services[0]),
+            PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_RESTART, PhTranslateUiText(L"R&estart"), menuInfo->u.Service.Services[0]),
             indexOfMenuItem
             );
     }
@@ -460,7 +460,7 @@ VOID MiListSectionMenuInitializingCallback(
         // * There are no extra submenus.
         if (serviceList->Count != 1)
         {
-            servicesMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, 0, L"Ser&vices", NULL);
+            servicesMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, 0, PhTranslateUiText(L"Ser&vices"), NULL);
         }
 
         // Create and add a menu item for each service.
@@ -491,11 +491,11 @@ VOID MiListSectionMenuInitializingCallback(
                 servicesMenuItem = serviceMenuItem;
             }
 
-            PhInsertEMenuItem(serviceMenuItem, PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_GOTOSERVICE, L"&Go to service", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, startMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_START, L"Sta&rt", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, continueMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_CONTINUE, L"&Continue", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, pauseMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_PAUSE, L"&Pause", serviceItem), ULONG_MAX);
-            PhInsertEMenuItem(serviceMenuItem, stopMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_STOP, L"St&op", serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_GOTOSERVICE, PhTranslateUiText(L"&Go to service"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, startMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_START, PhTranslateUiText(L"Sta&rt"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, continueMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_CONTINUE, PhTranslateUiText(L"&Continue"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, pauseMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_PAUSE, PhTranslateUiText(L"&Pause"), serviceItem), ULONG_MAX);
+            PhInsertEMenuItem(serviceMenuItem, stopMenuItem = PhPluginCreateEMenuItem(PluginInstance, 0, ID_SERVICE_STOP, PhTranslateUiText(L"St&op"), serviceItem), ULONG_MAX);
 
             // Massive copy and paste from mainwnd.c.
             // == START ==

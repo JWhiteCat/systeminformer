@@ -20,6 +20,7 @@ VOID PhAddDefaultSettings(
     VOID
     )
 {
+    PhpAddIntegerSetting(SETTING_UI_LANGUAGE, L"0"); // 0 = English, 1 = Simplified Chinese
     PhpAddStringSetting(SETTING_SCHEMA_FILE, L"https://systeminformer.io/settings.schema.json");
     PhpAddIntegerSetting(SETTING_ALLOW_ONLY_ONE_INSTANCE, L"1");
     PhpAddIntegerSetting(SETTING_CLOSE_ON_ESCAPE, L"0");

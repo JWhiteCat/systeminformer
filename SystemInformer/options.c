@@ -222,7 +222,7 @@ static HTREEITEM PhpTreeViewInsertItem(
     insert.hParent = TVI_ROOT;
     insert.hInsertAfter = HandleInsertAfter;
     insert.item.mask = TVIF_TEXT | TVIF_PARAM;
-    insert.item.pszText = (PWSTR)Text;
+    insert.item.pszText = (PWSTR)PhTranslateUiText(Text);
     insert.item.lParam = (LPARAM)Context;
 
     return TreeView_InsertItem(OptionsTreeControl, &insert);
@@ -1601,40 +1601,40 @@ static VOID PhpAdvancedPageLoad(
 
     if (!ReloadOnly)
     {
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_SINGLE_INSTANCE, L"Allow only one instance", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_HIDE_WHENCLOSED, L"Hide when closed", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_HIDE_WHENMINIMIZED, L"Hide when minimized", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_START_ATLOGON, L"Start when I log on", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_START_HIDDEN, L"Start hidden", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_WARNINGS, L"Enable warnings", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_DRIVER, L"Enable kernel-mode driver", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MONOSPACE, L"Enable monospace fonts", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_PLUGINS, L"Enable plugins", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_UNDECORATE_SYMBOLS, L"Enable undecorated symbols", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_AVX_EXTENSIONS, L"Enable AVX extensions (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_COLUMN_HEADER_TOTALS, L"Enable column header totals (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_CYCLE_CPU_USAGE, L"Enable cycle-based CPU usage", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LOW_LATENCY_MODE, L"Enable low-latency mode (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_GRAPH_SCALING, L"Enable fixed graph scaling (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MINIINFO_WINDOW, L"Enable tray information window", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MEMSTRINGS_TREE, L"Enable new memory strings dialog", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LASTTAB_SUPPORT, L"Remember last selected window", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_THEME_SUPPORT, L"Enable theme support (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_START_ASADMIN, L"Enable start as admin (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_STREAM_MODE, L"Enable streamer mode (disable window capture) (experimental)", NULL);
-        //PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LINUX_SUPPORT, L"Enable Windows subsystem for Linux support", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_NETWORK_RESOLVE, L"Resolve network addresses", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_NETWORK_RESOLVE_DOH, L"Resolve DNS over HTTPS (DoH)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_INSTANT_TOOLTIPS, L"Show tooltips instantly", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_IMAGE_COHERENCY, L"Check images for coherency", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_STAGE2, L"Check images for digital signatures", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_SERVICE_STAGE2, L"Check services for digital signatures", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ICON_SINGLE_CLICK, L"Single-click tray icons", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ICON_TOGGLE_VISIBILITY, L"Icon click toggles visibility", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_PROPAGATE_CPU_USAGE, L"Include usage of collapsed processes", NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_SINGLE_INSTANCE, PhTranslateUiText(L"Allow only one instance"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_HIDE_WHENCLOSED, PhTranslateUiText(L"Hide when closed"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_HIDE_WHENMINIMIZED, PhTranslateUiText(L"Hide when minimized"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_START_ATLOGON, PhTranslateUiText(L"Start when I log on"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_START_HIDDEN, PhTranslateUiText(L"Start hidden"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_WARNINGS, PhTranslateUiText(L"Enable warnings"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_DRIVER, PhTranslateUiText(L"Enable kernel-mode driver"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MONOSPACE, PhTranslateUiText(L"Enable monospace fonts"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_PLUGINS, PhTranslateUiText(L"Enable plugins"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_UNDECORATE_SYMBOLS, PhTranslateUiText(L"Enable undecorated symbols"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_AVX_EXTENSIONS, PhTranslateUiText(L"Enable AVX extensions (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_COLUMN_HEADER_TOTALS, PhTranslateUiText(L"Enable column header totals (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_CYCLE_CPU_USAGE, PhTranslateUiText(L"Enable cycle-based CPU usage"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LOW_LATENCY_MODE, PhTranslateUiText(L"Enable low-latency mode (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_GRAPH_SCALING, PhTranslateUiText(L"Enable fixed graph scaling (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MINIINFO_WINDOW, PhTranslateUiText(L"Enable tray information window"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_MEMSTRINGS_TREE, PhTranslateUiText(L"Enable new memory strings dialog"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LASTTAB_SUPPORT, PhTranslateUiText(L"Remember last selected window"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_THEME_SUPPORT, PhTranslateUiText(L"Enable theme support (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_START_ASADMIN, PhTranslateUiText(L"Enable start as admin (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_STREAM_MODE, PhTranslateUiText(L"Enable streamer mode (disable window capture) (experimental)"), NULL);
+        //PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_LINUX_SUPPORT, PhTranslateUiText(L"Enable Windows subsystem for Linux support"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_NETWORK_RESOLVE, PhTranslateUiText(L"Resolve network addresses"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_NETWORK_RESOLVE_DOH, PhTranslateUiText(L"Resolve DNS over HTTPS (DoH)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_INSTANT_TOOLTIPS, PhTranslateUiText(L"Show tooltips instantly"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_IMAGE_COHERENCY, PhTranslateUiText(L"Check images for coherency"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_STAGE2, PhTranslateUiText(L"Check images for digital signatures"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ENABLE_SERVICE_STAGE2, PhTranslateUiText(L"Check services for digital signatures"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ICON_SINGLE_CLICK, PhTranslateUiText(L"Single-click tray icons"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_ICON_TOGGLE_VISIBILITY, PhTranslateUiText(L"Icon click toggles visibility"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_PROPAGATE_CPU_USAGE, PhTranslateUiText(L"Include usage of collapsed processes"), NULL);
         if (WindowsVersion >= WINDOWS_10)
-            PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_PROCESS_MONITOR, L"Enable process monitor (experimental)", NULL);
-        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_SHOW_ADVANCED_OPTIONS, L"Show advanced options", NULL);
+            PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_PROCESS_MONITOR, PhTranslateUiText(L"Enable process monitor (experimental)"), NULL);
+        PhAddListViewItem(listViewHandle, PHP_OPTIONS_INDEX_SHOW_ADVANCED_OPTIONS, PhTranslateUiText(L"Show advanced options"), NULL);
     }
 
     SetLvItemCheckForSetting(listViewHandle, PHP_OPTIONS_INDEX_SINGLE_INSTANCE, SETTING_ALLOW_ONLY_ONE_INSTANCE);
@@ -1697,8 +1697,8 @@ static VOID PhpOptionsNotifyChangeCallback(
             PhMainWndHandle,
             TD_YES_BUTTON | TD_NO_BUTTON,
             TD_INFORMATION_ICON,
-            L"One or more options you have changed requires a restart of System Informer.",
-            L"Do you want to restart System Informer now?"
+            PhTranslateUiText(L"One or more options you have changed requires a restart of System Informer."),
+            PhTranslateUiText(L"Do you want to restart System Informer now?")
             ) == IDYES)
         {
             SystemInformer_PrepareForEarlyShutdown();
@@ -1735,8 +1735,8 @@ VOID PhShowOptionsRestartRequired(
         ownerWindowHandle,
         TD_YES_BUTTON | TD_NO_BUTTON,
         TD_INFORMATION_ICON,
-        L"One or more options you have changed requires a restart of System Informer.",
-        L"Do you want to restart System Informer now?"
+        PhTranslateUiText(L"One or more options you have changed requires a restart of System Informer."),
+        PhTranslateUiText(L"Do you want to restart System Informer now?")
         ) == IDYES)
     {
         SystemInformer_PrepareForEarlyShutdown();
@@ -1951,6 +1951,72 @@ UINT_PTR CALLBACK PhpChooseFontDlgHookProc(
     return FALSE;
 }
 
+// Unlike the modeless Options window, language changes have an explicit commit
+// point. Closing this dialog (including Escape or the title-bar X) never saves.
+static INT_PTR CALLBACK PhpOptionsLanguageDlgProc(
+    _In_ HWND hwndDlg,
+    _In_ UINT uMsg,
+    _In_ WPARAM wParam,
+    _In_ LPARAM lParam
+    )
+{
+    switch (uMsg)
+    {
+    case WM_INITDIALOG:
+        {
+            HWND comboBoxHandle = GetDlgItem(hwndDlg, IDC_UILANGUAGE);
+            ULONG language = PhGetIntegerSetting(SETTING_UI_LANGUAGE);
+
+            // Keep both self-names recognizable regardless of the active language.
+            ComboBox_AddString(comboBoxHandle, L"English");
+            ComboBox_AddString(comboBoxHandle, L"\x7b80\x4f53\x4e2d\x6587");
+            ComboBox_SetCurSel(comboBoxHandle, language == 1 ? 1 : 0);
+            PhCenterWindow(hwndDlg, GetParent(hwndDlg));
+            PhInitializeWindowTheme(hwndDlg, PhEnableThemeSupport);
+        }
+        break;
+    case WM_CLOSE:
+        EndDialog(hwndDlg, IDCANCEL);
+        break;
+    case WM_COMMAND:
+        switch (GET_WM_COMMAND_ID(wParam, lParam))
+        {
+        case IDCANCEL:
+            EndDialog(hwndDlg, IDCANCEL);
+            break;
+        case IDOK:
+            {
+                INT selection = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_UILANGUAGE));
+                ULONG oldLanguage = PhGetIntegerSetting(SETTING_UI_LANGUAGE);
+                NTSTATUS status;
+
+                if (selection != 0 && selection != 1)
+                    break;
+
+                if ((ULONG)selection != oldLanguage)
+                {
+                    PhSetIntegerSetting(SETTING_UI_LANGUAGE, (ULONG)selection);
+                    status = PhSaveSettings2(PhSettingsFileName);
+
+                    if (!NT_SUCCESS(status))
+                    {
+                        // Do not leave an unsaved preference that takes effect on exit.
+                        PhSetIntegerSetting(SETTING_UI_LANGUAGE, oldLanguage);
+                        PhShowStatus(hwndDlg, PhTranslateUiText(L"Unable to save the language setting."), status, 0);
+                        break;
+                    }
+                }
+
+                EndDialog(hwndDlg, IDOK);
+            }
+            break;
+        }
+        break;
+    }
+
+    return FALSE;
+}
+
 INT_PTR CALLBACK PhpOptionsGeneralDlgProc(
     _In_ HWND hwndDlg,
     _In_ UINT uMsg,
@@ -2089,6 +2155,20 @@ INT_PTR CALLBACK PhpOptionsGeneralDlgProc(
         {
             switch (GET_WM_COMMAND_ID(wParam, lParam))
             {
+            case IDC_LANGUAGE:
+                {
+                    if (PhDialogBox(
+                        PhInstanceHandle,
+                        MAKEINTRESOURCE(IDD_OPTLANGUAGE),
+                        hwndDlg,
+                        PhpOptionsLanguageDlgProc,
+                        NULL
+                        ) == IDOK && PhGetIntegerSetting(SETTING_UI_LANGUAGE) != PhGetUiLanguage())
+                    {
+                        PhShowOptionsRestartRequired(hwndDlg);
+                    }
+                }
+                break;
             case IDC_FONT:
                 {
                     LOGFONT font;

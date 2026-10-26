@@ -232,6 +232,7 @@
     <ClCompile Include="symprv_std.cpp" />
     <ClCompile Include="theme.c" />
     <ClCompile Include="phcrypt.c" />
+    <ClCompile Include="uilang.c" />
     <ClCompile Include="util.c" />
     <ClCompile Include="svcsup.c" />
     <ClCompile Include="symprv.c" />
@@ -285,6 +286,7 @@
     <ClInclude Include="circbuf_i.h" />
     <ClInclude Include="include\colorbox.h" />
     <ClInclude Include="include\phutil.h" />
+    <ClInclude Include="include\uilang_zh_cn.h" />
     <ClInclude Include="include\provider.h" />
     <ClInclude Include="include\secedit.h" />
     <ClInclude Include="include\secwmi.h" />

@@ -110,7 +110,7 @@ VOID NTAPI MainMenuInitializingCallback(
 
     if (menuInfo->u.MainMenu.SubMenuIndex == PH_MENU_ITEM_LOCATION_HELP)
     {
-        PhInsertEMenuItem(menuInfo->Menu, PhPluginCreateEMenuItem(PluginInstance, 0, UPDATE_MENUITEM_UPDATE, L"Check for &updates", NULL), 0);
+        PhInsertEMenuItem(menuInfo->Menu, PhPluginCreateEMenuItem(PluginInstance, 0, UPDATE_MENUITEM_UPDATE, PhTranslateUiText(L"Check for &updates"), NULL), 0);
     }
 }
 

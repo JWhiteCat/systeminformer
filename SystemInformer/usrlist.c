@@ -1011,7 +1011,7 @@ BOOLEAN NTAPI PhpUserListTreeNewCallback(
             if (numberOfNodes != 0)
             {
                 menu = PhCreateEMenu();
-                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"Copy", NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"Copy"), NULL, NULL), ULONG_MAX);
                 PhInsertCopyCellEMenuItem(menu, IDC_COPY, context->TreeNewHandle, contextMenu->Column);
 
                 selectedItem = PhShowEMenu(
@@ -1096,31 +1096,31 @@ VOID PhpInitializeUserListTree(
 
     TreeNew_SetRedraw(Context->TreeNewHandle, FALSE);
 
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_NAME, TRUE, L"User name", 250, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_DOMAIN, TRUE, L"Logon domain", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_SESSION_ID, TRUE, L"Session ID", 80, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_TYPE, TRUE, L"Logon type", 100, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_AUTHENTICATION_PACKAGE, TRUE, L"Authentication package", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_DNS_DOMAIN_NAME, TRUE, L"DNS domain name", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_TIME, TRUE, L"Logon time", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_LAST_SET, TRUE, L"Password last set", 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_NAME, TRUE, PhTranslateUiText(L"User name"), 250, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_DOMAIN, TRUE, PhTranslateUiText(L"Logon domain"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_SESSION_ID, TRUE, PhTranslateUiText(L"Session ID"), 80, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_TYPE, TRUE, PhTranslateUiText(L"Logon type"), 100, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_AUTHENTICATION_PACKAGE, TRUE, PhTranslateUiText(L"Authentication package"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_DNS_DOMAIN_NAME, TRUE, PhTranslateUiText(L"DNS domain name"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_TIME, TRUE, PhTranslateUiText(L"Logon time"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_LAST_SET, TRUE, PhTranslateUiText(L"Password last set"), 140, PH_ALIGN_LEFT, index++, 0);
     PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_SID, TRUE, L"SID", 180, PH_ALIGN_LEFT, index++, 0);
 
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_ID, FALSE, L"Logon ID", 80, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_SERVER, FALSE, L"Logon server", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_PRINCIPAL_NAME, FALSE, L"User principal name", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_FLAGS, FALSE, L"User flags", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_FAILED_ATTEMPTS_SINCE_LAST_SUCCESSFUL_LOGON, FALSE, L"Failed logon attempts since", 80, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LAST_SUCCESSFUL_LOGON, FALSE, L"Last successful logon", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LAST_FAILED_LOGON, FALSE, L"Last failed logon", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_SCRIPT, FALSE, L"Longon script", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PROFILE_PATH, FALSE, L"Profile path", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_HOME_DIRECTORY, FALSE, L"Home directory", 180, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_HOME_DIRECTORY_DRIVE, FALSE, L"Home directory drive", 80, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGOFF_TIME, FALSE, L"Logoff time", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_KICKOFF_TIME, FALSE, L"Kickoff time", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_CAN_CHANGE, FALSE, L"Password can set", 140, PH_ALIGN_LEFT, index++, 0);
-    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_MUST_CHANGE, FALSE, L"Password must set", 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_ID, FALSE, PhTranslateUiText(L"Logon ID"), 80, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_SERVER, FALSE, PhTranslateUiText(L"Logon server"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_PRINCIPAL_NAME, FALSE, PhTranslateUiText(L"User principal name"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_USER_FLAGS, FALSE, PhTranslateUiText(L"User flags"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_FAILED_ATTEMPTS_SINCE_LAST_SUCCESSFUL_LOGON, FALSE, PhTranslateUiText(L"Failed logon attempts since"), 80, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LAST_SUCCESSFUL_LOGON, FALSE, PhTranslateUiText(L"Last successful logon"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LAST_FAILED_LOGON, FALSE, PhTranslateUiText(L"Last failed logon"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGON_SCRIPT, FALSE, PhTranslateUiText(L"Longon script"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PROFILE_PATH, FALSE, PhTranslateUiText(L"Profile path"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_HOME_DIRECTORY, FALSE, PhTranslateUiText(L"Home directory"), 180, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_HOME_DIRECTORY_DRIVE, FALSE, PhTranslateUiText(L"Home directory drive"), 80, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_LOGOFF_TIME, FALSE, PhTranslateUiText(L"Logoff time"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_KICKOFF_TIME, FALSE, PhTranslateUiText(L"Kickoff time"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_CAN_CHANGE, FALSE, PhTranslateUiText(L"Password can set"), 140, PH_ALIGN_LEFT, index++, 0);
+    PhAddTreeNewColumn(Context->TreeNewHandle, PH_USER_LIST_COLUMN_PASSWORD_MUST_CHANGE, FALSE, PhTranslateUiText(L"Password must set"), 140, PH_ALIGN_LEFT, index++, 0);
 
     TreeNew_SetRedraw(Context->TreeNewHandle, TRUE);
     //TreeNew_SetTriState(Context->TreeNewHandle, FALSE);

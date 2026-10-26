@@ -135,7 +135,7 @@ HPROPSHEETPAGE PhCreateJobPage(
     propSheetPage.lParam = (LPARAM)jobPageContext;
     propSheetPage.pfnCallback = PhpJobPropPageProc;
 
-    propSheetPageHandle = CreatePropertySheetPage(&propSheetPage);
+    propSheetPageHandle = PhCreatePropertySheetPage(&propSheetPage);
     // CreatePropertySheetPage would have sent PSPCB_ADDREF (below),
     // which would have added a reference.
     PhDereferenceObject(jobPageContext);
@@ -344,12 +344,12 @@ INT_PTR CALLBACK PhpJobPageProc(
             PhSetExtendedListView(processesLv);
             PhSetExtendedListView(limitsLv);
 
-            PhAddListViewColumn(processesLv, 0, 0, 0, LVCFMT_LEFT, 240, L"Name");
-            PhAddListViewColumn(limitsLv, 0, 0, 0, LVCFMT_LEFT, 120, L"Name");
-            PhAddListViewColumn(limitsLv, 1, 1, 1, LVCFMT_LEFT, 160, L"Value");
+            PhAddListViewColumn(processesLv, 0, 0, 0, LVCFMT_LEFT, 240, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(limitsLv, 0, 0, 0, LVCFMT_LEFT, 120, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(limitsLv, 1, 1, 1, LVCFMT_LEFT, 160, PhTranslateUiText(L"Value"));
             PhLoadListViewColumnsFromSetting(SETTING_JOB_LIST_VIEW_COLUMNS, limitsLv);
 
-            PhSetDialogItemText(hwndDlg, IDC_NAME, L"Unknown");
+            PhSetDialogItemText(hwndDlg, IDC_NAME, PhTranslateUiText(L"Unknown"));
 
             if (NT_SUCCESS(jobPageContext->OpenObject(
                 &jobHandle,
@@ -640,7 +640,7 @@ INT_PTR CALLBACK PhpJobPageProc(
                 if (PhGetSelectedListViewItemParams(listViewHandle, &listviewItems, &numberOfItems))
                 {
                     menu = PhCreateEMenu();
-                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"&Copy", NULL, NULL), ULONG_MAX);
+                    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"&Copy"), NULL, NULL), ULONG_MAX);
                     PhInsertCopyListViewEMenuItem(menu, IDC_COPY, listViewHandle);
 
                     item = PhShowEMenu(
@@ -728,7 +728,7 @@ VOID PhpShowJobAdvancedProperties(
     statisticsPage.hInstance = PhInstanceHandle;
     statisticsPage.pfnDlgProc = PhpJobStatisticsPageProc;
     statisticsPage.lParam = (LPARAM)Context;
-    pages[0] = CreatePropertySheetPage(&statisticsPage);
+    pages[0] = PhCreatePropertySheetPage(&statisticsPage);
 
     // Security
 
@@ -795,23 +795,23 @@ static VOID PhpRefreshJobStatisticsInfo(
     }
     else
     {
-        PhSetDialogItemText(hwndDlg, IDC_ZACTIVEPROCESSES_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZTOTALPROCESSES_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZTERMINATEDPROCESSES_V, L"Unknown");
+        PhSetDialogItemText(hwndDlg, IDC_ZACTIVEPROCESSES_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZTOTALPROCESSES_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZTERMINATEDPROCESSES_V, PhTranslateUiText(L"Unknown"));
 
-        PhSetDialogItemText(hwndDlg, IDC_ZUSERTIME_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZKERNELTIME_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZUSERTIMEPERIOD_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZKERNELTIMEPERIOD_V, L"Unknown");
+        PhSetDialogItemText(hwndDlg, IDC_ZUSERTIME_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZKERNELTIME_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZUSERTIMEPERIOD_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZKERNELTIMEPERIOD_V, PhTranslateUiText(L"Unknown"));
 
-        PhSetDialogItemText(hwndDlg, IDC_ZPAGEFAULTS_V, L"Unknown");
+        PhSetDialogItemText(hwndDlg, IDC_ZPAGEFAULTS_V, PhTranslateUiText(L"Unknown"));
 
-        PhSetDialogItemText(hwndDlg, IDC_ZIOREADS_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZIOREADBYTES_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZIOWRITES_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZIOWRITEBYTES_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZIOOTHER_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZIOOTHERBYTES_V, L"Unknown");
+        PhSetDialogItemText(hwndDlg, IDC_ZIOREADS_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZIOREADBYTES_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZIOWRITES_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZIOWRITEBYTES_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZIOOTHER_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZIOOTHERBYTES_V, PhTranslateUiText(L"Unknown"));
     }
 
     if (jobHandle && NT_SUCCESS(PhGetJobExtendedLimits(
@@ -824,8 +824,8 @@ static VOID PhpRefreshJobStatisticsInfo(
     }
     else
     {
-        PhSetDialogItemText(hwndDlg, IDC_ZPEAKPROCESSUSAGE_V, L"Unknown");
-        PhSetDialogItemText(hwndDlg, IDC_ZPEAKJOBUSAGE_V, L"Unknown");
+        PhSetDialogItemText(hwndDlg, IDC_ZPEAKPROCESSUSAGE_V, PhTranslateUiText(L"Unknown"));
+        PhSetDialogItemText(hwndDlg, IDC_ZPEAKJOBUSAGE_V, PhTranslateUiText(L"Unknown"));
     }
 
     if (jobHandle)

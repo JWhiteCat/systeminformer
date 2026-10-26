@@ -333,8 +333,8 @@ INT_PTR CALLBACK EspServiceOtherDlgProc(
             context->PrivilegesLv = privilegesLv = GetDlgItem(WindowHandle, IDC_PRIVILEGES);
             PhSetListViewStyle(privilegesLv, FALSE, TRUE);
             PhSetControlTheme(privilegesLv, L"explorer");
-            PhAddListViewColumn(privilegesLv, 0, 0, 0, LVCFMT_LEFT, 140, L"Name");
-            PhAddListViewColumn(privilegesLv, 1, 1, 1, LVCFMT_LEFT, 220, L"Display name");
+            PhAddListViewColumn(privilegesLv, 0, 0, 0, LVCFMT_LEFT, 140, PhTranslateUiText(L"Name"));
+            PhAddListViewColumn(privilegesLv, 1, 1, 1, LVCFMT_LEFT, 220, PhTranslateUiText(L"Display name"));
             PhSetExtendedListView(privilegesLv);
 
             context->PrivilegeList = PhCreateList(32);

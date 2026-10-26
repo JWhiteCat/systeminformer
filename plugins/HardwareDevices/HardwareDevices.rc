@@ -443,3 +443,9 @@ END
 /////////////////////////////////////////////////////////////////////////////
 
 
+
+
+// Simplified Chinese UI resources; generated from the English resources above.
+#ifndef APSTUDIO_INVOKED
+#include "HardwareDevices.zh-CN.rc"
+#endif

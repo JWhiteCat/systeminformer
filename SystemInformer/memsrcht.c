@@ -1724,11 +1724,11 @@ INT_PTR CALLBACK PhpMemoryStringsDlgProc(
 
                 menu = PhCreateEMenu();
 
-                readWrite = PhCreateEMenuItem(0, IDC_SHOW, L"Read/Write memory", NULL, NULL);
+                readWrite = PhCreateEMenuItem(0, IDC_SHOW, PhTranslateUiText(L"Read/Write memory"), NULL, NULL);
                 readWrite->Flags |= PH_EMENU_DEFAULT;
                 PhInsertEMenuItem(menu, readWrite, ULONG_MAX);
                 PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, L"Copy", NULL, NULL), ULONG_MAX);
+                PhInsertEMenuItem(menu, PhCreateEMenuItem(0, IDC_COPY, PhTranslateUiText(L"Copy"), NULL, NULL), ULONG_MAX);
                 PhInsertCopyCellEMenuItem(menu, IDC_COPY, context->TreeNewHandle, contextMenuEvent->Column);
 
                 if (numberOfNodes != 1)
@@ -1800,13 +1800,13 @@ INT_PTR CALLBACK PhpMemoryStringsDlgProc(
 
                     ansi = PhCreateEMenuItem(0, 1, L"ANSI", NULL, NULL);
                     unicode = PhCreateEMenuItem(0, 2, L"Unicode", NULL, NULL);
-                    extendedUnicode = PhCreateEMenuItem(0, 3, L"Extended character set", NULL, NULL);
-                    private = PhCreateEMenuItem(0, 4, L"Private", NULL, NULL);
-                    image = PhCreateEMenuItem(0, 5, L"Image", NULL, NULL);
-                    mapped = PhCreateEMenuItem(0, 6, L"Mapped", NULL, NULL);
-                    minimumLength = PhCreateEMenuItem(0, 7, L"Minimum length...", NULL, NULL);
-                    zeroPad = PhCreateEMenuItem(0, 8, L"Zero pad addresses", NULL, NULL);
-                    refresh = PhCreateEMenuItem(0, 9, L"Refresh\bF5", NULL, NULL);
+                    extendedUnicode = PhCreateEMenuItem(0, 3, PhTranslateUiText(L"Extended character set"), NULL, NULL);
+                    private = PhCreateEMenuItem(0, 4, PhTranslateUiText(L"Private"), NULL, NULL);
+                    image = PhCreateEMenuItem(0, 5, PhTranslateUiText(L"Image"), NULL, NULL);
+                    mapped = PhCreateEMenuItem(0, 6, PhTranslateUiText(L"Mapped"), NULL, NULL);
+                    minimumLength = PhCreateEMenuItem(0, 7, PhTranslateUiText(L"Minimum length..."), NULL, NULL);
+                    zeroPad = PhCreateEMenuItem(0, 8, PhTranslateUiText(L"Zero pad addresses"), NULL, NULL);
+                    refresh = PhCreateEMenuItem(0, 9, PhTranslateUiText(L"Refresh\bF5"), NULL, NULL);
                     if (context->ThreadCount == 0)
                         swprintf_s(threadCountLabel, RTL_NUMBER_OF(threadCountLabel), L"Thread count... (auto)");
                     else

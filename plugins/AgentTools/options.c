@@ -377,14 +377,14 @@ VOID AtpShowContextMenu(
     }
 
     menu = PhCreateEMenu();
-    access = PhCreateEMenuItem(selection ? 0 : PH_EMENU_DISABLED, 0, L"Access", NULL, NULL);
-    authorization = PhCreateEMenuItem(selection ? 0 : PH_EMENU_DISABLED, 0, L"Authorization", NULL, NULL);
+    access = PhCreateEMenuItem(selection ? 0 : PH_EMENU_DISABLED, 0, PhTranslateUiText(L"Access"), NULL, NULL);
+    authorization = PhCreateEMenuItem(selection ? 0 : PH_EMENU_DISABLED, 0, PhTranslateUiText(L"Authorization"), NULL, NULL);
     AtpAppendAccessItems(access, tools);
     AtpAppendAuthorizationItems(authorization, tools);
     PhInsertEMenuItem(menu, access, ULONG_MAX);
     PhInsertEMenuItem(menu, authorization, ULONG_MAX);
     PhInsertEMenuItem(menu, PhCreateEMenuSeparator(), ULONG_MAX);
-    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, AT_MENU_RESET, selection ? L"Reset to defaults" : L"Reset all to defaults", NULL, NULL), ULONG_MAX);
+    PhInsertEMenuItem(menu, PhCreateEMenuItem(0, AT_MENU_RESET, selection ? PhTranslateUiText(L"Reset to defaults") : PhTranslateUiText(L"Reset all to defaults"), NULL, NULL), ULONG_MAX);
 
     item = PhShowEMenu(
         menu,
@@ -614,9 +614,9 @@ INT_PTR CALLBACK AtOptionsDlgProc(
             TreeNew_SetExtendedFlags(treeNew, TN_FLAG_ITEM_DRAG_SELECT, TN_FLAG_ITEM_DRAG_SELECT);
             TreeNew_SetTriState(treeNew, TRUE);
             TreeNew_SetSort(treeNew, AT_COLUMN_TOOL, NoSortOrder);
-            PhAddTreeNewColumn(treeNew, AT_COLUMN_TOOL, TRUE, L"Tool", 240, PH_ALIGN_LEFT, 0, 0);
-            PhAddTreeNewColumn(treeNew, AT_COLUMN_ACCESS, TRUE, L"Access", 70, PH_ALIGN_LEFT, 1, 0);
-            PhAddTreeNewColumn(treeNew, AT_COLUMN_AUTHORIZATION, TRUE, L"Authorization", 120, PH_ALIGN_LEFT, 2, 0);
+            PhAddTreeNewColumn(treeNew, AT_COLUMN_TOOL, TRUE, PhTranslateUiText(L"Tool"), 240, PH_ALIGN_LEFT, 0, 0);
+            PhAddTreeNewColumn(treeNew, AT_COLUMN_ACCESS, TRUE, PhTranslateUiText(L"Access"), 70, PH_ALIGN_LEFT, 1, 0);
+            PhAddTreeNewColumn(treeNew, AT_COLUMN_AUTHORIZATION, TRUE, PhTranslateUiText(L"Authorization"), 120, PH_ALIGN_LEFT, 2, 0);
 
             columns = PhGetStringSetting(SETTING_NAME_TOOLS_LISTVIEW_COLUMNS);
             PhCmLoadSettings(treeNew, &columns->sr);
@@ -1349,13 +1349,13 @@ INT_PTR CALLBACK AtAgentsDlgProc(
             TreeNew_SetEmptyText(treeNew, &emptyText, 0);
             TreeNew_SetTriState(treeNew, TRUE);
             TreeNew_SetSort(treeNew, AT_AGENT_COLUMN_ID, NoSortOrder);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_ID, TRUE, L"Id", 30, PH_ALIGN_LEFT, 0, 0);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_USER, TRUE, L"User", 90, PH_ALIGN_LEFT, 1, DT_PATH_ELLIPSIS);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CLIENT, TRUE, L"Client", 110, PH_ALIGN_LEFT, 2, 0);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_LAUNCHER, TRUE, L"Launcher", 140, PH_ALIGN_LEFT, 3, DT_PATH_ELLIPSIS);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CONNECTED, TRUE, L"Connected", 100, PH_ALIGN_LEFT, 4, 0);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CALLS, TRUE, L"Calls", 40, PH_ALIGN_LEFT, 5, 0);
-            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_GRANTS, TRUE, L"Session grants", 140, PH_ALIGN_LEFT, 6, 0);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_ID, TRUE, PhTranslateUiText(L"Id"), 30, PH_ALIGN_LEFT, 0, 0);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_USER, TRUE, PhTranslateUiText(L"User"), 90, PH_ALIGN_LEFT, 1, DT_PATH_ELLIPSIS);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CLIENT, TRUE, PhTranslateUiText(L"Client"), 110, PH_ALIGN_LEFT, 2, 0);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_LAUNCHER, TRUE, PhTranslateUiText(L"Launcher"), 140, PH_ALIGN_LEFT, 3, DT_PATH_ELLIPSIS);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CONNECTED, TRUE, PhTranslateUiText(L"Connected"), 100, PH_ALIGN_LEFT, 4, 0);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_CALLS, TRUE, PhTranslateUiText(L"Calls"), 40, PH_ALIGN_LEFT, 5, 0);
+            PhAddTreeNewColumn(treeNew, AT_AGENT_COLUMN_GRANTS, TRUE, PhTranslateUiText(L"Session grants"), 140, PH_ALIGN_LEFT, 6, 0);
 
             columns = PhGetStringSetting(SETTING_NAME_AGENTS_LISTVIEW_COLUMNS);
             PhCmLoadSettings(treeNew, &columns->sr);
