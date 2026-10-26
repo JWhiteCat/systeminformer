@@ -1,3 +1,17 @@
+UNOFFICIAL BILINGUAL PREVIEW - JWhiteCat/systeminformer
+
+This is not an official Winsider release. The fork supports English and
+Simplified Chinese under Options > General > Language; save and restart.
+Some specialized text falls back to English. The bundled Updater is disabled:
+get fork updates manually from https://github.com/JWhiteCat/systeminformer/releases
+
+No Authenticode signing or production-signed matching kernel driver is claimed.
+Privileged kernel functions may be unavailable. Do not disable Windows security
+protections or bypass browser/OS security warnings. GUI, DPI and installation
+flows have not been manually tested. Use an isolated Windows test environment
+and preserve your existing installation/settings. See the release page for the
+exact source commit, CI evidence, SHA256 checksums and preview limitations.
+
 System Informer is a powerful free and open source process viewer.
 
 ## Getting started
@@ -10,7 +24,7 @@ type". You cannot run the 32-bit version of System Informer on a
 
 ## System requirements
 
-Windows 7 or higher, 32-bit or 64-bit.
+Windows 10 or higher, 32-bit or 64-bit.
 
 ## Settings
 

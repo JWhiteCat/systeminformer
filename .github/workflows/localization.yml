@@ -21,7 +21,7 @@ jobs:
           python3 tools/localization/generate_dynamic.py --check
       - name: Check resource invariants and settings control flow
         run: |
-          python3 -m unittest discover -s tests -p 'test_ui_*.py' -v
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
           python3 -m unittest discover -s localization -p test_resources.py -v
           python3 tools/localization/test_dynamic.py
       - name: Test actual localization C code with portable platform shims

@@ -202,72 +202,17 @@ LOGICAL DllMain(
     case DLL_PROCESS_ATTACH:
         {
             PPH_PLUGIN_INFORMATION info;
-            PH_SETTING_CREATE settings[] =
-            {
-                { IntegerSettingType, SETTING_NAME_AUTO_CHECK, L"1" },
-                { IntegerSettingType, SETTING_NAME_LAST_CHECK, L"0" },
-                { IntegerSettingType, SETTING_NAME_UPDATE_INTERVAL, L"1" },
-                { IntegerPairSettingType, SETTING_NAME_CHANGELOG_WINDOW_POSITION, L"0,0" },
-                { ScalableIntegerPairSettingType, SETTING_NAME_CHANGELOG_WINDOW_SIZE, L"@96|420,250" },
-                { StringSettingType, SETTING_NAME_CHANGELOG_COLUMNS, L"" },
-                { StringSettingType, SETTING_NAME_CHANGELOG_SORTCOLUMN, L"" },
-                { IntegerSettingType, SETTING_NAME_UPDATE_MODE, L"0" },
-                { IntegerSettingType, SETTING_NAME_UPDATE_AVAILABLE, L"0" },
-                { StringSettingType, SETTING_NAME_UPDATE_DATA, L"" },
-                { IntegerSettingType, SETTING_NAME_AUTO_CHECK_PAGE, L"0" },
-                { IntegerSettingType, SETTING_NAME_SHOW_NOTIFICATION, L"0" },
-                { IntegerSettingType, SETTING_NAME_TOAST_NOTIFICATIONS, L"0" },
-                { IntegerSettingType, SETTING_NAME_DOWNLOAD_METHOD, L"1" }
-            };
 
-            WPP_INIT_TRACING(PLUGIN_NAME);
-
+            // Deliberately inert in this unofficial bilingual fork. Register only
+            // descriptive metadata: never register update callbacks or settings.
+            // Shipping this DLL also replaces older copies during installation,
+            // so existing AutoCheck/update-cache preferences cannot re-enable it.
             PluginInstance = PhRegisterPlugin(PLUGIN_NAME, Instance, &info);
-
             if (!PluginInstance)
                 return FALSE;
 
-            info->DisplayName = L"Update Checker";
-            info->Description = L"Plugin for checking new System Informer releases via the Help menu.";
-
-            PhRegisterCallback(
-                PhGetPluginCallback(PluginInstance, PluginCallbackLoad),
-                LoadCallback,
-                NULL,
-                &PluginLoadCallbackRegistration
-                );
-            PhRegisterCallback(
-                PhGetPluginCallback(PluginInstance, PluginCallbackUnload),
-                UnloadCallback,
-                NULL,
-                &PluginUnloadCallbackRegistration
-                );
-            PhRegisterCallback(
-                PhGetGeneralCallback(GeneralCallbackMainWindowShowing),
-                MainWindowShowingCallback,
-                NULL,
-                &MainWindowShowingCallbackRegistration
-                );
-            PhRegisterCallback(
-                PhGetGeneralCallback(GeneralCallbackMainMenuInitializing),
-                MainMenuInitializingCallback,
-                NULL,
-                &MainMenuInitializingCallbackRegistration
-                );
-            PhRegisterCallback(
-                PhGetPluginCallback(PluginInstance, PluginCallbackMenuItem),
-                MenuItemCallback,
-                NULL,
-                &PluginMenuItemCallbackRegistration
-                );
-            PhRegisterCallback(
-                PhGetGeneralCallback(GeneralCallbackOptionsWindowInitializing),
-                ShowOptionsCallback,
-                NULL,
-                &PluginShowOptionsCallbackRegistration
-                );
-
-            PhAddSettings(settings, ARRAYSIZE(settings));
+            info->DisplayName = L"Update Checker (disabled in bilingual fork)";
+            info->Description = L"Upstream binary updates are disabled to preserve this unofficial bilingual build. Download updates from JWhiteCat/systeminformer Releases.";
         }
         break;
     }

@@ -67,6 +67,9 @@ Select **简体中文** or **English**, confirm, and restart to apply.
 英文和简体中文可在设置中切换；取消不会保存，未翻译文本回退到英文。
 See [localization coverage, maintenance and validation](localization/README.md).
 
+This is an unofficial fork. Upstream binary updates are disabled to preserve the
+bilingual build. See [preview packaging, verification and limitations](docs/BILINGUAL-RELEASE.md).
+
 ## Enhancements/Bugs
 
 Please use the
